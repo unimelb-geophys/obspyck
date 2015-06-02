@@ -1,0 +1,73 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focplt << EOT > a.junk
+/* To see output on screen, take out the > a.junk part of previous line
+/*    and delete second line in this file
+/* Printed output is in a file focplt.lst -- renamed in last line
+n	Upper hemisphere projection?..[N]
+y	Plot polarities and/or ratio data?
+/*  Next entry is input polarity/ratio plot file name
+focmec_8sta.inp
+y	Desired file?..[Y]
+y	Plot impulsive P polarities?..[Y]
+	Enter size for impulsive P polarities [0.25]
+	linewidth for impulsive P polarities..[1]
+n	Plot impulsive SH polarities?..[Y]
+n	Plot impulsive SV polarities?..[Y]
+n	Plot ratios?..[Y]
+	linewidth for circle outline..[2]
+y	Add a title?..[Y]
+/*  Enter title - up to 40 characters
+Sakhalin Solutions
+	linewidth for title..[2]
+n	Add time & file name? ..[y]
+y	Add more data to plot?..[Y]
+/*  Next entry is input polarity/ratio plot file name
+focmec_neic.inp
+y	Desired file?..[Y]
+y	Plot impulsive P polarities?..[Y]
+0.1	Enter size for impulsive P polarities [0.25]
+1	linewidth for impulsive P polarities..[1]
+n	Plot emergent P polarities?..[Y]
+n	Add more data to plot?
+y       Plot focal mechanism solutions?..[Y]
+y       Print/display solution summaries?..[N]
+n       Plot P, T and B axes?  [Y]
+y       P nodal planes..[Y]
+y       Dashed Line?..[N]
+0.2	length of dahs [0.1]
+0.05	space between dashes [0.1]
+1	Linewidth for solutions ... [1]
+y	Same plot as data?
+y       Input solutions from a file?..[Y]
+/* file name with solutions
+focmec_all.out
+y	Correct file?
+n	Plot time & file name?..[Y]
+y	More solutions?
+n       Plot P, T and B axes?  [Y]
+y       P nodal planes..[Y]
+n       Dashed Line?..[N]
+2	Linewidth for solutions ... [1]
+n       Input solutions from a file?..[Y]
+76.33 56.12 -64.37	Dip, Stridke, Rake: CMT solution
+y	More solutions?
+n       Plot P, T and B axes?  [Y]
+y       P nodal planes..[Y]
+y       Dashed Line?..[N]
+0.05	length of dahs [0.1]
+0.03	space between dashes [0.1]
+1	Linewidth for solutions ... [1]
+y       Input solutions from a file?..[Y]
+/* file name with solutions
+focmec_neic.out
+y	Correct file?
+n	More solutions?
+n	Add a plot label?
+EOT
+if ($status != 0) exit
+mv focplt.lst focplt_PNodal.lst
+mv temp.sgf PNodal.sgf
+../../bin/sgftox PNodal
+if ($status != 0) exit
+../../bin/sgftopdf PNodal

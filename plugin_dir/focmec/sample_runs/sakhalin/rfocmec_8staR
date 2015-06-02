@@ -1,0 +1,32 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focmec << EOT > a.junk
+/*  FOCMEC .out file [focmec.out]
+focmec_8staR.out		Output file name [focmec.out]
+Sakhalin:  Relative weight SV 0.5 error: 8 BB stations 
+/*  Previous line comment (up to 80 char) Next line input file [focmec.iknp]
+focmec_8sta.inp
+	correct file  [y]
+y	relative weighting..[n]
+0.1	Threshold for weighting [0.1]
+n	Total polarity option
+0	allowed P polarity erors..[0]
+0.5	allowed SV polarity erors..[0]
+0	allowed SH polarity erors..[0]
+1.83	vp/vs ratio..[1.732]
+0.5	maximum allowed log10 of ratio..[0.6]
+0	numer of allowed ratio errors
+        lower-limit cutoff for P radiation factor..[0.05]
+        lower-limit cutoff for S radiation factor..[0.15]
+	exit after this many acceptable solutions...[100]
+	minimum B trend  [0]
+	B increment  [5]
+	maximum B trend  [355]
+	min B plunge..[0]
+	increment  [5]
+	maximum..[90]
+	minimum A angle..[0]
+	increment  [5]
+	maximum  [85]
+EOT
+mv focmec.lst focmec_8staR.lst

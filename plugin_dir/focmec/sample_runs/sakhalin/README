@@ -1,0 +1,33 @@
+The program sequence is ratio_prep, focmec_prep, focmec, focplt
+
+Included in this directory are only the input files that do not come from
+running an earlier program in the chain.  Output files from successful runs are
+in ../../doc/sakhalin-doc -- it is suggested that one compare your results with
+them..
+
+There is one driver file for Ratio_prep
+
+There are two driver files for Focmec_prep:  one brings in Q.
+
+There are seven driver files for Focmec
+   rfocmec_8staR      8 BB stations: relative error 0.5 SV
+   rfocmec_neic       NEIC P polarity
+   rfocmec_neicR      NEIC P polarity relative weighting
+   rfocmec_all        NEIC P polarity plus 8 BB station
+   rfocmec_allR       NEIC P polarity plus 8 BB station relative weighting
+   rfocmec_all-neicF  All data fixed to the NEIC P polarity solution
+   rfocmec_all-CMTFR   All data fixed to the CMT solution relative weighting
+
+There are two driver files for Focplt:
+   rfocplt_PNodal  P nodal planes for NEIC, BB, CMT solutons plus all data
+   rfocplt_SV      SV nodal surfaces for BB (10), CMT, NEIC (1)
+
+In preparing the CMT solution, program Dsretc was run for the three possible
+input mechanism: two sets of dip, strike, slip plus trends and plunges
+for P and T.  (The angles are given to the nearest integer, so the criterion
+was to find the input set that gave the best consistency.)  Output, and the
+DMC summary, are in ../../doc/sakhalin-doc.
+
+File stations.loc is called by the script rration_prep_8sta
+
+See the documentation for further discussion about these runs.

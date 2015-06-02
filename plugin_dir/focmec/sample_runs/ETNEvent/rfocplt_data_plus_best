@@ -1,0 +1,36 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focplt << EOT > a.junk
+n	Upper hemisphere projection?..[N]
+y	Plot polarities and/or ratio data?
+/*  Next entry is input polarity/ratio plot file name
+8703270729.dat
+y	Desired file?..[Y]
+y	Plot impulsive P polarities?..[Y]
+0.25	Size for impulsive P polarities [0.25]
+1	linewidth for impulsive P polarities..[1]
+2	linewidth for circle outline..[2]
+y	Add a title?..[Y]
+/*  Enter title - up to 40 characters
+Event 8703270729
+2	linewidth for title..[2]
+n	Include time & file name?..[Y]
+n	Add more data to plot?..[N]
+y       Plot focal mechanism solutions?..[Y]
+y       Print/display solution summaries?..[N]
+n       Plot P, T and B axes?  [Y]
+y       P nodal planes..[Y]
+n       Dashed Line?..[N]
+1	Linewidth for solutions ... [1]
+y	Same plot as data?
+n       Input solutions from a file?..[Y]
+82.95 275.25 44.56	Dip, Stridke, Rake
+n	More solutions?
+n	Add a plot label?
+EOT
+if ($status != 0) exit
+mv focplt.lst focplt_data_plus_best.lst
+mv temp.sgf data_plus_best.sgf
+../../bin/sgftox data_plus_best
+if ($status != 0) exit
+../../bin/sgftopdf data_plus_best

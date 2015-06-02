@@ -1,0 +1,21 @@
+First one must run hypowfoc to convert the hypoellipse output file into 
+a Focmec input file.  
+
+.././.hypo2foc  Run interactively using the prompts.
+   The input file is 8703270729.arc
+   The output file is 8703270729.dat
+
+Included are driver files for four runs of Focmec and two runs of Focplt.
+
+   For Focmec, two files use 8703270729.dat as the input file:
+   rfocmec (unity-weighint errors), and rfocmecR (relative weighting)
+   The other two are to demonstrate the use of emergent P data, and the
+   input file is test_emergence.dat.
+   
+   Input for the three Focplt runs use the output from one or the other
+   from the first two Focmec runs as input.
+
+Copies of successful output files, including the PDF version of plots, 
+are in ../../doc/ETNEvent-doc/
+
+Discussion of the runs are in the documentation.

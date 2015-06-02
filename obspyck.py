@@ -11,7 +11,6 @@
 #---------------------------------------------------------------------
 
 import os
-import re
 import sys
 import shutil
 import optparse
@@ -22,26 +21,32 @@ from StringIO import StringIO
 import logging
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QEvent, Qt
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm
 import matplotlib.transforms
+from matplotlib.transforms import blended_transform_factory
 from matplotlib.patches import Ellipse
 from matplotlib.ticker import FuncFormatter, FormatStrFormatter, MaxNLocator
-from matplotlib.backend_bases import MouseEvent as MplMouseEvent
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as QNavigationToolbar
+from matplotlib.backend_bases import MouseEvent as MplMouseEvent, KeyEvent as MplKeyEvent
+import lxml.etree
+from lxml.etree import SubElement as Sub
 
 #sys.path.append('/baysoft/obspy/misc/symlink')
 #os.chdir("/baysoft/obspyck/")
 from obspy import __version__ as OBSPY_VERSION
 from obspy.core.util import NamedTemporaryFile, AttribDict
 from obspy.core.util.geodetics import gps2DistAzimuth, kilometer2degrees
-from obspy import UTCDateTime, Stream
-from obspy.signal.util import utlLonLat
-from obspy.signal.invsim import estimateMagnitude
-from obspy.signal.rotate import rotate_ZNE_LQT, rotate_NE_RT
+from obspy import UTCDateTime, Stream#, readEvents
+from obspy.signal.util import utlLonLat, utlGeoKm
+from obspy.signal.invsim import estimateMagnitude, paz2AmpValueOfFreqResp
+from obspy.signal import rotate_ZNE_LQT, rotate_NE_RT
+from obspy.signal import arPick
+from obspy.signal.util import az2baz2az
 from obspy.imaging.spectrogram import spectrogram
-from obspy.imaging.beachball import Beach
+from obspy.imaging.beachball import Beachball
 
 from qt_designer import Ui_qMainWindow_obsPyck
 from util import *
@@ -147,8 +152,7 @@ class ObsPyck(QtGui.QMainWindow):
         self.widgets.qSplitter_horizontal.setCollapsible(_i, False)
         # XXX this resizing operation (buttons minimum size) should be done in
         # XXX the qt_designer.ui but I didn't find the correct settings there..
-        self.widgets.qSplitter_horizontal.setSizes([1, 800, 0])
-        self.widgets.qSplitter_vertical.setSizes([800, 90])
+        self.widgets.qSplitter_horizontal.setSizes([1, 9999])
         # Bind the canvas to the mouse wheel event. Use Qt events for it
         # because the matplotlib events seem to have a problem with Debian.
         self.widgets.qMplCanvas.wheelEvent = self.__mpl_wheelEvent
@@ -205,10 +209,10 @@ class ObsPyck(QtGui.QMainWindow):
         self.catalog.events = [event]
         self.setXMLEventID()
         # indicates which of the available focal mechanisms is selected
-        self.focMechCurrent = None
+        self.focMechCurrent = None 
         self.spectrogramColormap = matplotlib.cm.jet
         # indicates which of the available events from seishub was loaded
-        self.seishubEventCurrent = None
+        self.seishubEventCurrent = None 
         # indicates how many events are available from seishub
         self.seishubEventCount = None
         # setup server information
@@ -281,8 +285,7 @@ class ObsPyck(QtGui.QMainWindow):
         self.canv.mpl_connect('motion_notify_event', self.__mpl_motionNotifyEvent)
         self.multicursorReinit()
         self.canv.show()
-        #self.showMaximized()
-        self.show()
+        self.showMaximized()
         # XXX XXX the good old focus issue again!?! no events get to the mpl canvas
         # XXX self.canv.setFocusPolicy(Qt.WheelFocus)
         #print self.canv.hasFocus()
@@ -712,19 +715,6 @@ class ObsPyck(QtGui.QMainWindow):
         except AttributeError:
             pass
 
-    def on_qToolButton_ms_toggled(self):
-        self.streams[self.stPt] = self.streams_bkp[self.stPt].copy()
-        self.drawStream()
-
-    def on_qDoubleSpinBox_waterlevel_valueChanged(self, newvalue):
-        if not self.widgets.qToolButton_ms.isChecked():
-            self.canv.setFocus() # XXX needed??
-            return
-        self.updateCurrentStream()
-        self.updatePlot()
-        # reset focus to matplotlib figure
-        self.canv.setFocus() # XXX needed?? # XXX do we still need this focus grabbing with QT??? XXX XXX XXX XXX
-
     def on_qToolButton_filter_toggled(self):
         self.updateCurrentStream()
         self.updatePlot()
@@ -857,7 +847,7 @@ class ObsPyck(QtGui.QMainWindow):
 
     def on_qToolButton_spectrogram_toggled(self):
         state = self.widgets.qToolButton_spectrogram.isChecked()
-        widgets_deactivate = ("qToolButton_ms", "qDoubleSpinBox_waterlevel", "qToolButton_filter", "qToolButton_overview",
+        widgets_deactivate = ("qToolButton_filter", "qToolButton_overview",
                 "qComboBox_filterType", "qCheckBox_zerophase",
                 "qCheckBox_50Hz", "qDoubleSpinBox_corners",
                 "qLabel_highpass", "qLabel_lowpass", "qDoubleSpinBox_highpass",
@@ -944,21 +934,6 @@ class ObsPyck(QtGui.QMainWindow):
                 msg2 = "50Hz Bandstop"
                 self.info(msg2)
             stream.filter(type, **options)
-            self.info(msg)
-        except:
-            err = "Error during filtering. Showing unfiltered data."
-            self.error(err)
-
-    def _ms(self, stream):
-        """
-        Corrects to m/s.
-        """
-        w = self.widgets
-        water_level = float(w.qDoubleSpinBox_waterlevel.value())
-        msg = "Correcting to m/s (water_level=%.1f)." % water_level
-        try:
-            stream.simulate(paz_remove="self", paz_simulate=None,
-                            remove_sensitivity=True, water_level=water_level)
             self.info(msg)
         except:
             err = "Error during filtering. Showing unfiltered data."
@@ -1246,8 +1221,6 @@ class ObsPyck(QtGui.QMainWindow):
         st = self.streams[self.stPt]
         # To display filtered data we overwrite our alias to current stream
         # and replace it with the filtered data.
-        if self.widgets.qToolButton_ms.isChecked():
-            self._ms(st)
         if self.widgets.qToolButton_filter.isChecked():
             self._filter(st)
         else:
@@ -1294,12 +1267,6 @@ class ObsPyck(QtGui.QMainWindow):
         if keep_ylims:
             for ax, ylims_ in zip(self.axs, ylims):
                 ax.set_ylim(ylims_)
-        else:
-            for ax in self.axs:
-                ax.relim()
-                ax.autoscale(axis="y", enable=True)
-                ax.autoscale_view(scalex=False)
-                ax.autoscale(axis="y", enable=False)
         self.redraw()
 
     # Define the event that handles the setting of P- and S-wave picks
@@ -1351,7 +1318,7 @@ class ObsPyck(QtGui.QMainWindow):
             tr = st[self.axs.index(ev.inaxes)]
             # We want to round from the picking location to
             # the time value of the nearest sample:
-            samp_rate = tr.stats.sampling_rate
+            samp_rate = st[0].stats.sampling_rate
             pickSample = (ev.xdata - t[0]) * samp_rate
             self.debug(str(pickSample))
             pickSample = int(round(pickSample))
@@ -1453,9 +1420,6 @@ class ObsPyck(QtGui.QMainWindow):
                 return
 
         if ev.key in (keys['setMagMin'], keys['setMagMax']):
-            if self.widgets.qToolButton_ms.isChecked():
-                self.error("Can only set amplitude pick on raw count data!")
-                return
             # some keyPress events only make sense inside our matplotlib axes
             if not ev.inaxes in self.axs:
                 return
@@ -1475,7 +1439,7 @@ class ObsPyck(QtGui.QMainWindow):
                 if tr.stats._format == "GSE2":
                     val = val / (tr.stats.calib * 2 * np.pi / tr.stats.gse2.calper)
                 # save time of magnitude minimum in seconds
-                tmp_magtime = self.time_rel2abs(t[tmp_magtime])
+                tmp_magtime = self.time_rel2abs(tmp_magtime / samp_rate)
                 if ev.key == keys['setMagMin']:
                     ampl.setLow(tmp_magtime, val)
                 elif ev.key == keys['setMagMax']:
@@ -1635,19 +1599,7 @@ class ObsPyck(QtGui.QMainWindow):
                 self.widgets.qLabel_xdata_rel.setText(formatXTicklabels(ev.xdata))
                 label = self.time_rel2abs(ev.xdata).isoformat().replace("T", "  ")[:-3]
                 self.widgets.qLabel_xdata_abs.setText(label)
-                if self.widgets.qToolButton_ms.isChecked():
-                    absval = abs(ev.ydata)
-                    if absval >= 1:
-                        text = "%.3g m/s" % ev.ydata
-                    elif absval >= 1e-4:
-                        text = "%.3g mm/s" % (ev.ydata * 1e3)
-                    elif absval >= 1e-7:
-                        text = "%.3g mu/s" % (ev.ydata * 1e6)
-                    else:
-                        text = "%.3g nm/s" % (ev.ydata * 1e9)
-                    self.widgets.qLabel_ydata.setText(text)
-                else:
-                    self.widgets.qLabel_ydata.setText("%.1f" % ev.ydata)
+                self.widgets.qLabel_ydata.setText("%.1f" % ev.ydata)
             else:
                 self.widgets.qLabel_xdata_rel.setText("")
                 self.widgets.qLabel_xdata_abs.setText(str(ev.xdata))
@@ -1683,17 +1635,17 @@ class ObsPyck(QtGui.QMainWindow):
     def doFocmec(self):
         prog_dict = PROGRAMS['focmec']
         files = prog_dict['files']
+        f = open(files['phases'], 'wt')
+        f.write("\n") #first line is ignored!
         #Fortran style! 1: Station 2: Azimuth 3: Incident 4: Polarity
         #fmt = "ONTN  349.00   96.00C"
         fmt = "%4s  %6.2f  %6.2f%1s\n"
         count = 0
-        polarities = []
         for pick in self.catalog[0].picks:
             arrival = getArrivalForPick(self.catalog[0].origins[0].arrivals,
                                         pick)
             if arrival is None:
-                self.critical("focmec: No arrival for pick! Run location "
-                              "routine again after changing/adding picks! "
+                self.critical("focmec: No arrival for pick. "
                               "Skipping:\n%s" % pick)
                 continue
             pt = pick.phase_hint
@@ -1709,7 +1661,7 @@ class ObsPyck(QtGui.QMainWindow):
                 self.critical("focmec: Arrival missing takeoff angle. "
                               "Skipping:\n%s" % arrival)
                 continue
-            sta = pick.waveform_id.station_code
+            sta = pick.waveform_id.station_code[:4] #focmec has only 4 chars
             comp = pick.waveform_id.channel_code[-1]
             # XXX commenting the following out again
             # XXX only polarities with Azim/Inci info from location used
@@ -1741,27 +1693,8 @@ class ObsPyck(QtGui.QMainWindow):
                 self.error(err)
                 continue
             count += 1
-            polarities.append((sta, azim, inci, pol))
-        # make sure the 4-letter station codes are unique
-        sta_map_tmp = {}
-        for sta, azim, inci, pol in polarities:
-            sta_map_tmp.setdefault(sta[:4], set()).add(sta)
-        sta_map = {}
-        for sta_short, stations in sta_map_tmp.iteritems():
-            stations = list(stations)
-            if len(stations) == 1:
-                sta_map[stations[0]] = sta_short
-            else:
-                if len(stations) <= 10:
-                    for i, sta in enumerate(stations):
-                        sta_map[sta] = sta[:2] + "_%i" % i
-                else:
-                    for i, sta in enumerate(stations):
-                        sta_map[sta] = sta[0] + "_%02i" % i
-        with open(files['phases'], 'wt') as f:
-            f.write("\n") #first line is ignored!
-            for sta, azim, inci, pol in polarities:
-                f.write(fmt % (sta_map[sta], azim, inci, pol))
+            f.write(fmt % (sta, azim, inci, pol))
+        f.close()
         self.critical('Phases for focmec: %i' % count)
         self.catFile(files['phases'], self.critical)
         call = prog_dict['Call']
@@ -1790,10 +1723,9 @@ class ObsPyck(QtGui.QMainWindow):
             fm.station_polarity_count = count
             errors = sum([int(float(line[no])) for no in (3, 4, 5)]) # not used in xml
             fm.misfit = errors / float(fm.station_polarity_count)
-            fm.comments.append(Comment(text="Possible Solution Count: %i" % len(lines)))
-            fm.comments.append(Comment(text="Polarity Errors: %i" % errors))
-            self.critical("Strike: %6.2f  Dip: %6.2f  Rake: %6.2f  Polarity Errors: %i/%i" % \
-                      (np1.strike, np1.dip, np1.rake, errors, count))
+            fm.comments.append(Comment("Possible Solution Count: %i" % len(lines)))
+            self.critical("Strike: %6.2f  Dip: %6.2f  Rake: %6.2f  Misfit: %.2f" % \
+                          (np1.strike, np1.dip, np1.rake, fm.misfit))
             fms.append(fm)
         self.catalog[0].focal_mechanisms = fms
         self.focMechCurrent = 0
@@ -1814,7 +1746,7 @@ class ObsPyck(QtGui.QMainWindow):
                       (self.focMechCurrent + 1, len(fms)))
         self.critical("Strike: %6.2f  Dip: %6.2f  Rake: %6.2f  Misfit: %.2f" % \
                       (np1.strike, np1.dip, np1.rake, fm.misfit))
-
+    
     def drawFocMec(self):
         fms = self.catalog[0].focal_mechanisms
         if not fms:
@@ -1823,34 +1755,21 @@ class ObsPyck(QtGui.QMainWindow):
             return
         # make up the figure:
         fig = self.fig
-        ax = fig.add_subplot(111, aspect="equal")
-        axs = [ax]
-        self.axsFocMec = axs
-        #ax.autoscale_view(tight=False, scalex=True, scaley=True)
-        width = 2
-        plot_width = width * 0.95
-        #plot_width = 0.95 * width
+        self.axsFocMec = []
+        axs = self.axsFocMec
         fig.subplots_adjust(left=0, bottom=0, right=1, top=1)
+        
         # plot the selected solution
         fm = fms[self.focMechCurrent]
         np1 = fm.nodal_planes.nodal_plane_1
-        if hasattr(fm, "_beachball"):
-            beach = fm._beachball
-        else:
-            beach = Beach([np1.strike, np1.dip, np1.rake],
-                          width=plot_width)
-            fm._beachball = beach
-        ax.add_collection(beach)
+        axs.append(Beachball([np1.strike, np1.dip, np1.rake], fig=fig))
         # plot the alternative solutions
-        if not hasattr(fm, "_beachball2"):
-            for fm_ in fms:
-                _np1 = fm_.nodal_planes.nodal_plane_1
-                beach = Beach([_np1.strike, _np1.dip, _np1.rake],
-                              nofill=True, edgecolor='k', linewidth=1.,
-                              alpha=0.3, width=plot_width)
-                fm_._beachball2 = beach
-        for fm_ in fms:
-            ax.add_collection(fm_._beachball2)
+        for _fm in fms:
+            if _fm is not fm:
+                _np1 = _fm.nodal_planes.nodal_plane_1
+                axs.append(Beachball([_np1.strike, _np1.dip, _np1.rake],
+                          nofill=True, fig=fig, edgecolor='k',
+                          linewidth=1., alpha=0.3))
         text = "Focal Mechanism (%i of %i)" % \
                (self.focMechCurrent + 1, len(fms))
         text += "\nStrike: %6.2f  Dip: %6.2f  Rake: %6.2f" % \
@@ -1860,39 +1779,29 @@ class ObsPyck(QtGui.QMainWindow):
         if fm.station_polarity_count:
             text += "\nStation Polarity Count: %i" % fm.station_polarity_count
         #fig.canvas.set_window_title("Focal Mechanism (%i of %i)" % \
-        #        (self.focMechCurrent + 1, len(fms)))
+        #        (self.focMechCurrent + 1, self.focMechCount))
         fig.subplots_adjust(top=0.88) # make room for suptitle
         # values 0.02 and 0.96 fit best over the outer edges of beachball
         #ax = fig.add_axes([0.00, 0.02, 1.00, 0.96], polar=True)
-        ax.set_ylim(-1, 1)
-        ax.set_xlim(-1, 1)
-        ax.axison = False
         self.axFocMecStations = fig.add_axes([0.00,0.02,1.00,0.84], polar=True)
         ax = self.axFocMecStations
         ax.set_title(text)
         ax.set_axis_off()
-        azims = []
-        incis = []
-        polarities = []
-        bbox = dict(boxstyle="round,pad=0.2", fc="w", ec="k", lw=1.5,
-                    alpha=0.7)
-        for pick in self.catalog[0].picks:
-            if pick.phase_hint != "P":
-                continue
-            wid = pick.waveform_id
-            net = wid.network_code
-            sta = wid.station_code
+        for st in self.streams:
+            net = st[0].stats.network
+            sta = st[0].stats.station
+            pick = self.getPick(network=net, station=sta, phase_hint='P')
             arrival = getArrivalForPick(self.catalog[0].origins[0].arrivals, pick)
             if not pick:
                 continue
             if pick.polarity is None or arrival is None or arrival.azimuth is None or arrival.takeoff_angle is None:
                 continue
             if pick.polarity == "positive":
-                polarity = True
+                color = "black"
             elif pick.polarity == "negative":
-                polarity = False
+                color = "white"
             else:
-                polarity = None
+                color = "red"
             azim = arrival.azimuth
             inci = arrival.takeoff_angle
             # lower hemisphere projection
@@ -1902,21 +1811,8 @@ class ObsPyck(QtGui.QMainWindow):
             #we have to hack the azimuth because of the polar plot
             #axes orientation
             plotazim = (np.pi / 2.) - ((azim / 180.) * np.pi)
-            azims.append(plotazim)
-            incis.append(inci)
-            polarities.append(polarity)
-            ax.text(plotazim, inci, "  " + sta, va="top", bbox=bbox, zorder=2)
-        azims = np.array(azims)
-        incis = np.array(incis)
-        polarities = np.array(polarities, dtype=bool)
-        ax.scatter(azims, incis, marker="o", lw=2, facecolor="w",
-                   edgecolor="k", s=200, zorder=3)
-        mask = (polarities == True)
-        ax.scatter(azims[mask], incis[mask], marker="+", lw=3, color="k",
-                   s=200, zorder=4)
-        mask = ~mask
-        ax.scatter(azims[mask], incis[mask], marker="_", lw=3, color="k",
-                   s=200, zorder=4)
+            ax.scatter([plotazim], [inci], facecolor=color)
+            ax.text(plotazim, inci, " " + sta, va="top")
         #this fits the 90 degree incident value to the beachball edge best
         ax.set_ylim([0., 91])
         self.canv.draw()
@@ -2037,8 +1933,10 @@ class ObsPyck(QtGui.QMainWindow):
         x = float(line[2])
         y = float(line[4])
         depth = - float(line[6]) # depth: negative down!
-        
-        lon, lat = gk2lonlat(x, y)
+
+        lon, lat = latlongconv(x, y)
+
+#        lon, lat = gk2lonlat(x, y)
         
         # goto origin time info line
         try:
@@ -2286,16 +2184,6 @@ class ObsPyck(QtGui.QMainWindow):
                 polarity = "negative"
             else:
                 polarity = None
-            # predicted travel time is zero.
-            # seems to happen when no travel time cube is present for a
-            # provided station reading. show an error message and skip this
-            # arrival.
-            if float(line[15]) == 0.0:
-                msg = ("Predicted travel time for station '%s' is zero. "
-                       "Most likely the travel time cube is missing for "
-                       "this station! Skipping arrival for this station.")
-                self.error(msg % station)
-                continue
             res = float(line[16])
             weight = float(line[17])
 
@@ -2395,9 +2283,6 @@ class ObsPyck(QtGui.QMainWindow):
 
         line = lines.pop(0)
         model = line[49:].strip()
-        # this is to prevent characters that are invalid in QuakeML URIs
-        # hopefully handled in the future by obspy/obspy#1018
-        model = re.sub(r"[^\w\d\-\.\*\(\)\+\?_~'=,;#/&amp;]", '_', model)
 
         # assign origin info
         o = Origin()
@@ -2429,10 +2314,7 @@ class ObsPyck(QtGui.QMainWindow):
             if line.startswith(" STA NET COM L CR DIST AZM"):
                 break
         
-        oq.used_phase_count = 0
-        oq.extra = AttribDict()
-        oq.extra.usedPhaseCountP = {'value': 0, 'namespace': NAMESPACE}
-        oq.extra.usedPhaseCountS = {'value': 0, 'namespace': NAMESPACE}
+        o.quality.used_phase_count = 0
         used_stations = set()
         #XXX caution: we sometimes access the prior element!
         for i in range(len(lines)):
@@ -2491,13 +2373,6 @@ class ObsPyck(QtGui.QMainWindow):
             # we use weights 0,1,2,3 but hypo2000 outputs floats...
             arrival.time_weight = weight
             o.quality.used_phase_count += 1
-            if type == "P":
-                o.quality.extra.usedPhaseCountP['value'] += 1
-            elif type == "S":
-                o.quality.extra.usedPhaseCountS['value'] += 1
-            else:
-                self.error("Phase '%s' not recognized as P or S. " % type +
-                           "Not incrementing P nor S phase count.")
         o.used_station_count = len(used_stations)
 
     def updateMagnitude(self):
@@ -2768,8 +2643,7 @@ class ObsPyck(QtGui.QMainWindow):
         t = []
         alphas = {'Z': 1.0, 'L': 1.0,
                   'N': 0.4, 'Q': 0.4, 'R': 0.4, 'E': 0.4, 'T': 0.4}
-        for i, st in enumerate(self.streams_bkp):
-            st = st.copy()
+        for i, st in enumerate(self.streams):
             for j, tr in enumerate(st):
                 net, sta, loc, cha = tr.id.split(".")
                 color = COMPONENT_COLORS.get(cha[-1], "gray")
@@ -2799,14 +2673,8 @@ class ObsPyck(QtGui.QMainWindow):
                 # normalize with overall sensitivity and convert to nm/s
                 # if not explicitly deactivated on command line
                 if not self.options.nonormalization and not self.options.nometadata:
-                    if self.widgets.qToolButton_ms.isChecked():
-                        self._ms(tr)
-                    if self.widgets.qToolButton_filter.isChecked():
-                        self._filter(tr)
-                    data_ = tr.data
-                    #scaling = 1e9 / tr.stats.paz.sensitivity
-                    #data_ = tr.data * scaling
-                    scaling = None
+                    scaling = 1e9 / tr.stats.paz.sensitivity
+                    data_ = tr.data * scaling
                 else:
                     scaling = 1.0
                     data_ = tr.data
@@ -3546,14 +3414,14 @@ class ObsPyck(QtGui.QMainWindow):
 
     def clearOriginMagnitude(self):
         self.info("Clearing previous origin and magnitude data.")
-        self.catalog[0].origins = []
+        self.catalog[0].origins = [Origin()]
         self.catalog[0].magnitudes = []
         self.catalog[0].station_magnitudes = []
 
     def clearFocmec(self):
         self.info("Clearing previous focal mechanism data.")
         self.catalog[0].focal_mechanisms = []
-        self.focMechCurrent = None
+        self.focMechCount = None
 
     def updateAllItems(self):
         st = self.getCurrentStream()
@@ -3688,9 +3556,6 @@ class ObsPyck(QtGui.QMainWindow):
             ax.axvspan(time, reltime, color=color, alpha=0.2)
 
     def drawAmplitude(self, ax, amplitude, scaling=None, main_axes=True):
-        if self.widgets.qToolButton_ms.isChecked():
-            self.error("Not displaying an amplitude pick set on raw count data.")
-            return
         if main_axes:
             color = PHASE_COLORS['Mag']
         else:
@@ -3838,37 +3703,30 @@ class ObsPyck(QtGui.QMainWindow):
         """
         network, station, location, channel = seed_string.split(".")
         st = self.getStream(network, station, location)
-        self.debug("seed_string: %s" % seed_string)
-        self.debug(str(st))
         if st is None:
             return None
         st = st.select(channel=channel)
-        self.debug(str(st))
-        if not st:
+        if len(st) > 1:
+            err = ("Warning: More than one trace matching. "
+                   "This should not happen.")
+            self.error(err)
+        elif len(st) == 1:
+            return st[0]
+        else:
             return None
-        #if len(st) > 1:
-        #    err = ("Warning: More than one trace matching:\n%s\n"
-        #           "This should not happen. Using first Trace.") % str(st)
-        #    self.error(err)
-        return st[0]
 
     def getStream(self, network=None, station=None, location=None):
         """
         returns matching stream, does NOT ensure there is only one!
         """
-        self.debug("net: %s, sta: %s,loc: %s" % (network, station, location))
-        st = Stream()
-        for st_ in self.streams:
-            st += st_
-        for st_ in self.streams_bkp:
-            st += st_.copy()
-        self.debug(str(st))
-        st = st.select(network=network, station=station,
-                       location=location)
-        self.debug(str(st))
-        st.merge(-1)
-        self.debug(str(st))
-        if st:
+        streams = self.streams
+        for st in streams:
+            if network is not None and network != st[0].stats.network:
+                continue
+            if station is not None and station != st[0].stats.station:
+                continue
+            if location is not None and location != st[0].stats.location:
+                continue
             return st
         return None
 
@@ -4039,18 +3897,6 @@ class ObsPyck(QtGui.QMainWindow):
                     if contrib.weight:
                         stamag.used = True
 
-        if ev.focal_mechanisms:
-            pref_fm = ev.preferred_focal_mechanism()
-            if pref_fm:
-                try:
-                    self.focMechCurrent = ev.focal_mechanisms.index(pref_fm)
-                except ValueError:
-                    self.focMechCurrent = 0
-            else:
-                self.focMechCurrent = 0
-        else:
-            self.focMechCurrent = None
-
         self.critical("Fetched event %i of %i: %s (public: %s, user: %s)"% \
               (self.seishubEventCurrent + 1, self.seishubEventCount,
                resource_name, public, user))
@@ -4169,17 +4015,14 @@ def main():
     """
     Gets executed when the program starts.
     """
-    usage = (
-        "\n * SeisHub:\n    "
-        "%prog -t 2010-08-01T12:00:00 -d 30 -i BW.R*..EH*,BW.BGLD..EH*\n"
-        "%prog -t 2010-08-01T12:00:00 -d 30 --seishub-ids BW.R*..EH*,BW.BGLD..EH*\n"
-        " * ArcLink:\n    "
-        "%prog -t 2010-08-01T12:00:00 -d 30 --arclink-ids GE.APE..BH*,GE.IMMV..BH*\n"
-        " * combination of clients:\n    "
-        "%prog -t 2010-08-01T12:00:00 -d 30 -i BW.R*..EH* --arclink-ids GE.APE..BH*\n"
-        " * provide (additional) local files as command line arguments:\n    "
-        "%prog -t 2010-08-01T12:00:00 -d 30 some_path/*/my_local_*_.files"
-        "\n\nGet all available options with: %prog -h")
+    usage = "\n * SeisHub:\n    " + \
+            "%prog -t 2010-08-01T12:00:00 -d 30 -i BW.R*..EH*,BW.BGLD..EH*\n" + \
+            "%prog -t 2010-08-01T12:00:00 -d 30 --seishub-ids BW.R*..EH*,BW.BGLD..EH*\n" + \
+            " * ArcLink:\n    " + \
+            "%prog -t 2010-08-01T12:00:00 -d 30 --arclink-ids GE.APE..BH*,GE.IMMV..BH*\n" + \
+            " * combination of clients:\n    " + \
+            "%prog -t 2010-08-01T12:00:00 -d 30 -i BW.R*..EH* --arclink-ids GE.APE..BH*" + \
+            "\n\nGet all available options with: %prog -h"
     parser = optparse.OptionParser(usage)
     for opt_args, opt_kwargs in COMMANDLINE_OPTIONS:
         parser.add_option(*opt_args, **opt_kwargs)
@@ -4191,7 +4034,7 @@ def main():
         return
     # check for necessary options
     if not any([getattr(parser.values, parser.get_option(opt).dest) \
-                for opt in ("--seishub-ids", "--arclink-ids", "-f")] + args) \
+                for opt in ("--seishub-ids", "--arclink-ids", "-f")]) \
        or not all([getattr(parser.values, parser.get_option(opt).dest) \
                    for opt in ('-d', '-t')]):
         parser.print_usage()
@@ -4203,7 +4046,7 @@ def main():
     #    IPython.Shell.IPShellEmbed(['-pdb'],
     #            banner='Entering IPython.  Press Ctrl-D to exit.',
     #            exit_msg='Leaving Interpreter, back to program.')()
-    (clients, streams) = fetch_waveforms_with_metadata(options, args)
+    (clients, streams) = fetch_waveforms_with_metadata(options)
     # Create the GUI application
     qApp = QtGui.QApplication(sys.argv)
     obspyck = ObsPyck(clients, streams, options, KEYS)
@@ -4212,10 +4055,4 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        import obspy.io  # NOQA
-    except ImportError:
-        pass
-    else:
-        raise Exception("ObsPy >= 0.11 not supported.")
     main()

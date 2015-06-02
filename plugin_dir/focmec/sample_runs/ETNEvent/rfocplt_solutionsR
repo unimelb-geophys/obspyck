@@ -1,0 +1,30 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focplt << EOT > a.junk
+n	Upper hemisphere projection?..[N]
+n	Plot polarities and/or ratio data?
+y       Plot focal mechanism solutions?..[Y]
+n       Print/display solution summaries?..[N]
+n       Plot P, T and B axes?  [Y]
+y       P nodal planes..[Y]
+n       Dashed Line?..[N]
+1	Linewidth for solutions ... [1]!!
+2	linewidth for circle outline..[2]
+y	Add a title?..[Y]
+/*  Enter title - up to 40 characters
+ETN Event: 2.0 Relative Errors
+2	linewidth for title..[2]
+y       Input solutions from a file?..[Y]
+/* Filespec for file with solutions
+focmec_R2.0.out
+y       Correct file?..[Y]
+n	Include time & file name?..[Y]
+n	Add more solutions?
+n	Add a plot label?
+EOT
+if ($status != 0) exit
+mv focplt.lst focplt_R2.0.lst
+mv temp.sgf R2.0.sgf
+../../bin/sgftox R2.0
+if ($status != 0) exit
+../../bin/sgftopdf R2.0

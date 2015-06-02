@@ -1,0 +1,25 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focmec << EOT > a.junk
+/* output file with summary of solutions
+focmec_neicR.out
+Sakhalin: NEIC 190 stations 6.5 errors with relative weighting
+/*  Previous line is a comment (up to 80 char).  Next line is input filespec
+focmec_neic.inp
+	correct file  [y]
+n	Use emergent arrivals?..[y]
+y	relative weighting..[n]
+0.1	threshold for weignting
+6.5	allowed (weighted) polarity erors..[0]
+	exit after this many acceptable solutions...[100]
+	minimum B trend  [0]
+	B increment  [5]
+	maximum B trend  [355]
+	min B plunge..[0]
+	increment  [5]
+	maximum..[90]
+	minimum A angle..[0]
+	increment  [5]
+	maximum  [85]
+EOT
+mv focmec.lst focmec_neicR.lst

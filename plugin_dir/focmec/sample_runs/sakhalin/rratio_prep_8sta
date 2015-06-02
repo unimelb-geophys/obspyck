@@ -1,0 +1,10 @@
+#!/bin/csh -f
+if ( -f a.junk) \rm a.junk
+../../bin/ratio_prep << EOT > a.junk
+./stations.loc
+ratio_prep_8sta.inp
+../../lib/iasp91
+focmec_prep_8sta.inp
+Sakhalin: 12 May 1990   Includes SV and SH/SV iasp91  No SKS arrivals
+EOT
+mv ratio_prep.lst ratio_prep_8sta.lst

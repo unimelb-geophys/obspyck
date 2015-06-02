@@ -1,0 +1,23 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focmec << EOT > a.junk
+test_yes-emergence.out
+Event 8703270729 4 errors max 3 ep polarities
+\* Comment is previous line: Input file for focmec is next
+test_emergence.dat
+	correct file  [y]
+y	keep emergent polarities [Y]
+	relative weighting..[n]
+4	allowed P polarity erors..[0]
+	exit after this many acceptable solutions...[100]
+282.35	minimum B trend  [0]
+5	B increment  [5]
+283	maximum B trend  [355]
+45	min B plunge..[0]
+5	increment  [5]
+45.1	maximum..[90]
+80	minimum A angle..[0]
+5	increment  [5]
+81	maximum  [85]
+EOT
+mv focmec.lst test_yes-emergence.lst

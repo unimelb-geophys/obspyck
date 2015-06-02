@@ -1,0 +1,22 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focmec << EOT > a.junk
+focmec_4err.out
+Event 8703270729 4 errors max
+\* Comment is previous line: Input file for focmec is next
+8703270729.dat
+	correct file  [y]
+	relative weighting..[n]
+4	allowed P polarity erors..[0]
+	exit after this many acceptable solutions...[100]
+	minimum B trend  [0]
+	B increment  [5]
+	maximum B trend  [355]
+	min B plunge..[0]
+	increment  [5]
+	maximum..[90]
+	minimum A angle..[0]
+	increment  [5]
+	maximum  [85]
+EOT
+mv focmec.lst focmec_4err.lst

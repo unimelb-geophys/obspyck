@@ -1,0 +1,41 @@
+ 12-MAY-90 Sakhalin Island Event:  BLA, DMC, using 0.1 Hz velocity   KIP ok
+BLA  D
+BLA  R
+BLA  F
+BLA  H R 84,15.2
+BLA  S F 1.04,5.56
+CCM  D
+CCM  R
+CCM  B
+CCM  H R 53.5,17
+CCM  V B 12.6,17
+COR  D
+COR  R
+COR  B
+COR  H R 208,15.1
+COR  V B 58.8,15.1
+HRV  D
+HRV  R
+HRV  B
+HRV  H R 60,21
+HRV  S B 2.6,7.9
+KEV  D
+KEV  L
+KEV  B
+KEV  H L 41.5,39
+KEV  V B 34,39
+KIP  C
+KIP  R
+KIP  B
+KIP  H R 102,22
+KIP  V B 75,22
+PAS  D
+PAS  R
+PAS  B
+PAS  H R 74.5,11
+PAS  V B 23,11
+TOL  D
+TOL  L
+TOL  B
+TOL  H L 20,21
+TOL  V B 33,21

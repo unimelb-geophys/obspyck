@@ -1,0 +1,66 @@
+#!/bin/csh -f
+if (-f a.junk) \rm a.junk
+../../bin/focplt << EOT > a.junk
+/* To see output on screen, take out the > a.junk part of previous line
+/*    and delete second line in this file
+/* Printed output is in a file focplt.lst -- renamed in last line
+n	Upper hemisphere projection?..[N]
+y	Plot polarities and/or ratio data?
+/*  Next entry is input polarity/ratio plot file name
+focmec_8sta.inp
+y	Desired file?..[Y]
+n	Plot impulsive P polarities?..[Y]
+n	Plot impulsive SH polarities?..[Y]
+y	Plot impulsive SV polarities?..[Y]
+	Enter size for impulsive SV polarities [0.25]
+	linewidth for impulsive SV polarities..[1]
+n	Plot ratios?..[Y]6	Enter JPLOT from among 1,2,3,4,6
+/*	filename of plot output file [focplt.sgf]PNodal_all
+	linewidth for circle outline..[2]
+y	Add a title?..[Y]
+/*  Enter title - up to 40 characters
+SV Nodal Surfaces
+	linewidth for title..[2]
+n	Add time & file name? ..[y]
+n	Add more data to plot?
+y       Plot focal mechanism solutions?..[Y]
+y       Print/display solution summaries?..[N]
+n       Plot P, T and B axes?  [Y]
+n       P nodal planes..[Y]
+n       SH nodal surfaces..[Y]
+y       Dashed Line?..[N]
+0.2	length of dahs [0.1]
+0.06	space between dashes [0.1]
+1	Linewidth for solutions ... [1]
+y	Same plot as data?
+y       Input solutions from a file?..[Y]
+focmec_8staR.out
+y       Correct file?..[Y]
+n	Include time & file name?..[Y]
+y	More solutions?
+n       Plot P, T and B axes?  [Y]
+n       P nodal planes..[Y]
+n       SH nodal surfaces..[Y]
+n       Dashed Line?..[N]
+2	Linewidth for solutions ... [1]
+n       Input solutions from a file?..[Y]
+76.33 56.12 -64.37    Dip, Stridke, Rake: CMT solution
+y	More solutions?
+n       Plot P, T and B axes?  [Y]
+n       P nodal planes..[Y]
+n       SH nodal surfaces..[Y]
+y       Dashed Line?..[N]
+0.05	length of dahs [0.1]
+0.03	space between dashes [0.1]
+1	Linewidth for solutions ... [1]
+n       Input solutions from a file?..[Y]
+58.68 317.21 16.48	Dip, Stridke, Rake:  NEIC solution
+n	More solutions?
+n	Add a plot label?
+EOT
+if ($status != 0) exit
+mv focplt.lst focplt_SV.lst
+mv temp.sgf SV.sgf
+../../bin/sgftox SV
+if ($status != 0) exit
+../../bin/sgftopdf SV
