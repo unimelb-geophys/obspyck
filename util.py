@@ -59,14 +59,11 @@ COMMANDLINE_OPTIONS = (
                 'help': "Duration of seismogram in seconds"}),
         (("-f", "--files"), {'type': "string", 'dest': "files",
                 'help': "Local files containing waveform data. List of "
-                "absolute paths separated by commas. Local files can also "
-                "be provided as command line arguments (also e.g. using "
-                "wildcards and bash expansion)."}),
+                "absolute paths separated by commas"}),
         (("--dataless",), {'type': "string", 'dest': "dataless",
                 'help': "Local Dataless SEED files to look up metadata for "
                 "local waveform files. List of absolute paths separated by "
-                "commas. Local files can also be provided as command line "
-                "arguments (also e.g. using wildcards and bash expansion)."}),
+                "commas"}),
         (("-i", "--seishub-ids"), {'dest': "seishub_ids", 'default': "",
                 'help': "Ids to retrieve from SeisHub. Star for channel and "
                 "wildcards for stations are allowed, e.g. "
@@ -219,7 +216,6 @@ WIDGET_NAMES = ("qToolButton_clearAll", "qToolButton_clearOrigMag",
         "qComboBox_streamName", "qToolButton_nextStream",
         "qToolButton_overview", "qComboBox_phaseType", "qToolButton_rotateLQT",
         "qToolButton_rotateZRT", "qToolButton_filter", "qToolButton_trigger",
-        "qToolButton_ms", "qDoubleSpinBox_waterlevel",
         "qToolButton_arpicker", "qComboBox_filterType", "qCheckBox_zerophase",
         "qLabel_highpass", "qDoubleSpinBox_highpass", "qLabel_lowpass",
         "qDoubleSpinBox_lowpass",
@@ -319,13 +315,11 @@ def check_keybinding_conflicts(keys):
             err = "Interfering keybindings. Please check variable KEYS"
             raise Exception(err)
 
-def fetch_waveforms_with_metadata(options, args):
+def fetch_waveforms_with_metadata(options):
     """
     Sets up obspy clients and fetches waveforms and metadata according to command
     line options.
     Now also fetches data via arclink if --arclink-ids is used.
-    Args are tried to read as local waveform files or metadata files.
-
     XXX Notes: XXX
      - there is a problem in the arclink client with duplicate traces in
        fetched streams. therefore at the moment it might be necessary to use
@@ -358,11 +352,8 @@ def fetch_waveforms_with_metadata(options, args):
         print "Reading local waveform files:"
         print "-" * 80
         for file in options.files.split(","):
+            print file
             st = read(file, starttime=t1, endtime=t2, verify_chksum=options.verify_chksum)
-            msg = file
-            if not st:
-                msg += " (not matching requested time window)"
-            print msg
             for tr in st:
                 if not options.nometadata:
                     for parser in parsers:
@@ -376,49 +367,6 @@ def fetch_waveforms_with_metadata(options, args):
                 if tr.stats._format == 'GSE2':
                     apply_gse2_calib(tr)
             stream_tmp += st
-        ids = set([(tr.stats.network, tr.stats.station, tr.stats.location) for tr in stream_tmp])
-        for net, sta, loc in ids:
-            streams.append(stream_tmp.select(network=net, station=sta, location=loc))
-    if args:
-        from obspy.xseed import Parser
-        from obspy import read, Stream
-        print "=" * 80
-        print "Reading local files:"
-        print "-" * 80
-        stream_tmp = Stream()
-        for file in args:
-            # try to read as metadata
-            try:
-                p = Parser(file)
-            except:
-                pass
-            else:
-                print "%s: Metadata" % file
-                parsers.append(p)
-                continue
-            # try to read as waveforms
-            try:
-                st = read(file, starttime=t1, endtime=t2, verify_chksum=options.verify_chksum)
-            except TypeError:
-                print "File %s not recognized as dataless or waveform file. Skipped." % file
-                continue
-            msg = "%s: Waveforms" % file
-            if not st:
-                msg += " (not matching requested time window)"
-            print msg
-            stream_tmp += st
-        for tr in stream_tmp:
-            if not options.nometadata:
-                for parser in parsers:
-                    try:
-                        tr.stats.paz = parser.getPAZ(tr.id, tr.stats.starttime)
-                        tr.stats.coordinates = parser.getCoordinates(tr.id, tr.stats.starttime)
-                        break
-                    except:
-                        continue
-                    print "found no metadata for %s!!!" % file
-            if tr.stats._format == 'GSE2':
-                apply_gse2_calib(tr)
         ids = set([(tr.stats.network, tr.stats.station, tr.stats.location) for tr in stream_tmp])
         for net, sta, loc in ids:
             streams.append(stream_tmp.select(network=net, station=sta, location=loc))
@@ -564,8 +512,8 @@ def merge_check_and_cleanup_streams(streams, options):
         # Here we make sure that a station/network combination is not
         # present with two streams.
         if net_sta in sta_list:
-            msg = ("Warning: Station/Network combination '%s' "
-                   "already in stream list. Discarding stream.") % net_sta
+            msg = "Warning: Station/Network combination \"%s\" " + \
+                  "already in stream list. Discarding stream." % net_sta
             print msg
             warn_msg += msg + "\n"
             streams.remove(st)
@@ -830,7 +778,7 @@ class MultiCursor(MplMultiCursor):
             self.vlines = value
 
 
-def gk2lonlat(x, y, m_to_km=True):
+#def gk2lonlat(x, y, m_to_km=True):
     """
     This function converts X/Y Gauss-Krueger coordinates (zone 4, central
     meridian 12 deg) to Longitude/Latitude in WGS84 reference ellipsoid.
@@ -843,15 +791,20 @@ def gk2lonlat(x, y, m_to_km=True):
     http://trac.osgeo.org/proj/
     http://www.epsg-registry.org/
     """
-    import pyproj
+#    import pyproj
 
-    proj_wgs84 = pyproj.Proj(init="epsg:4326")
-    proj_gk4 = pyproj.Proj(init="epsg:31468")
+#    proj_wgs84 = pyproj.Proj(init="epsg:4326")
+#    proj_gk4 = pyproj.Proj(init="epsg:31468")
     # convert to meters first
-    if m_to_km:
-        x = x * 1000.
-        y = y * 1000.
-    lon, lat = pyproj.transform(proj_gk4, proj_wgs84, x, y)
+#    if m_to_km:
+#        x = x * 1000.
+#        y = y * 1000.
+#    lon, lat = pyproj.transform(proj_gk4, proj_wgs84, x, y)
+#    return (lon, lat)
+
+def latlongconv(x, y):
+    lat = -37 +(y/111.111)
+    lon = 144+ (x/(111.111*math.cos((2*math.pi)/-38.5)))
     return (lon, lat)
 
 def readNLLocScatter(scat_filename, textviewStdErrImproved):
@@ -867,7 +820,8 @@ def readNLLocScatter(scat_filename, textviewStdErrImproved):
     # read data, omit the first 4 values (header information) and reshape
     data = np.fromfile(scat_filename, dtype="<f4").astype("float")[4:]
     data = data.reshape((len(data)/4, 4)).swapaxes(0, 1)
-    lon, lat = gk2lonlat(data[0], data[1])
+#    lon, lat = gk2lonlat(data[0], data[1])
+    lon, lat = latlongconv(data[0], data[1])
     return np.vstack((lon, lat, data[2]))
 
 def errorEllipsoid2CartesianErrors(azimuth1, dip1, len1, azimuth2, dip2, len2,
@@ -1002,10 +956,12 @@ def getArrivalForPick(arrivals, pick):
     searches given arrivals for an arrival that references the given
     pick and returns it (empty Arrival object otherwise).
     """
+    arrival = None
     for a in arrivals:
         if a.pick_id == pick.resource_id:
-            return a
-    return None
+            arrival = a
+            break
+    return arrival
 
 
 def getPickForArrival(picks, arrival):
