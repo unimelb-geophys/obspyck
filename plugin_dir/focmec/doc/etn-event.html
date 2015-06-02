@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>FOCMEC: ETN Event</TITLE>
+</head>
+<BODY BGCOLOR="#ffffff">
+<table width="600" align = "center" BORDER="0" Cellpadding="3">
+<tr>
+<td>
+
+<h2 align="center">FOCMEC applied to a data set of <i>P</i>-wave polarities</h2>
+<p>
+This page supplements the discussion in section IV A of the <a href="./focmec_manual.pdf">FOCMEC manual</a>: the application of the <i>FOCMEC</i> package to find the focal mechanism for a magnitude 4.2
+event using <i>P</i> waves recorded by 37 local-to-regional-distance stations. 
+Directory <i>./sample_runs/ETNEvent</i> includes a README file,  drivers, and input files for the analysis.  Copies of output files are in directory <i>./doc/ETNEvent-doc/M/i></p>
+
+<p>
+The driver files for programs <i>Focmec</i> and <i>Focplt</i> are Unix csh scripts that include
+comments.  The programs can be run interactively without using scripts, but using the scripts allows
+quick editing to fine-tune runs.  For <i>Focmec</i>, the first run was done
+with eight unity-weighted polarity errors.  An examination of the output file indicated that
+four was the minimum that could give a well-constrained solution.</p>
+
+<p>As with the sample runs for the Sakhalin-Island event, the <i>Focplt</i> driver scripts as written end with call to produce first a screen display of the plot and then to convert the SGF plot file to a PDF file.  See Appendix D in the manual for more details on graphics in the <i>FOCMEC</i> package.</p>  
+
+<p>
+Prior to March, 2002,  program <i>Focmec</i> input code allowed one to enter + and - for
+emergent polarities (compression and dilatation respectively), but it did not
+use them as data.  (However, they could be plotted in program <i>Focplt</i>, if the user so chose.)  A
+user suggested there be an option for them to be used in program <i>Focmec</i>.  Accordingly, if any &ldquo;SENSE&rdquo; is
++ or -, the user will be prompted to choose if emergent polarity picks
+should be used or ignored.  To demonstrate this, a set of files has been
+added: an input data file in which three of the P picks have been changed from &ldquo;C&rdquo;
+to &ldquo;+&rdquo; plus two driver files for the two
+options. The new files all have &ldquo;emergence&rdquo; in their filespecs. </p>
+
+</td></tr></table>
+</body>
+</html>

@@ -1,0 +1,22 @@
+July 2008 by Arthur Snoke (snoke@vt.edu)   Updated in June 2009
+
+This package contains software for determining and displaying double-couple
+earthquake focal mechanisms. Input are polarities (P, SV , SH) and amplitude
+ratios (SV/P, SH/P, SV/SH). The main program, Focmec (coded in Fortran 77),
+performs an efficient, systematic search of the focal sphere and reports
+acceptable solutions based on selection criteria for the number of polarity
+errors and errors in amplitude ratios. The search of the focal sphere is
+uniform in angle, with selectable step size and bounds. The selection
+criteria for both polarities and angles allow adjustment through weightings
+for near-nodal solutions. Published applications include determinations of
+best-constrained fault-plane solutions for suites of earthquakes recorded at
+local to regional distances, analysis of large earthquakes observed at
+teleseismic distances, and the use of recorded polarities and relative
+amplitudes to produce waveform synthetics.
+
+The fact that you are reading this file indicates that you have downloaded,
+uncompressed, and expanded the source tarball focmec.tgz. Instructions for
+building and testing the package are in HTML format.  One starts by opening
+./doc/focmec.html.  Included among the links is one to the FOCMEC manual: 
+./doc/focmec_manual.pdf.  Another link is to a list of updates, so you can see
+what has been changed since the previous release.

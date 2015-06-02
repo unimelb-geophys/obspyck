@@ -1,0 +1,16 @@
+  Sun Jun 21 17:34:08 2009  for program FOCMEC
+ Sakhalin: 8 BB stations + 189 NEIC first motions NEIC sol. fixed
+ Input from a file focmec_all.inp
+  12-MAY-90 Sakhalin :  NEIC first motions (11-JUNE-90) + 8 bb stations
+ 197 P Pol.  8 SV Pol.  8 SH Pol. 50.0 allowed (weighted) errors
+Threshold = 0.10
+ Input 16 ratios 16 allowed errors, maximum error of 0.50    VP/VS = 1.830
+For ratios,  0.050 = P radiation cutoff  0.150 = S radiation cutoff
+ The minimum, increment and maximum B axis trend are    17.56    5.00   17.56
+ The limits for the B axis plunge are    55.00    5.00   55.00
+ The limits for the angle of the A axis are    25.00    5.00   25.00
+ R Ac/Al is number of acceptable ratios / allowed
+ RMS Err is the RMS of acceptable obs-calc ratios
+ RMS Err (all) is the RMS of all obs-calc ratios
+    Dip   Strike   Rake    Pol: P     SV    SH   R Ac/Al  RMS RErr   RErr (All)
+   58.68  317.21   16.48        7.5   1.8   1.2    02/12      0.35      1.03

@@ -1,0 +1,13 @@
+
+---- UOM.dataless ----
+
+This contains all metadata for UOm station, with three channels for each station included. For the Borehole sitesa, the channel codes are BHZ, BHN, BHE, whilst for surface stations it is EHE, EHN, EHZ. EXCEPT for NARR, where it is DHZ, DHN, DHE, since this is the code that waveform data is written with at this station (for some reason - and possibly not all the time?)
+
+
+---- UOMall.dataless ----
+
+This is meant to be in essence a 'one-stop-shop' for metadata, but as a result is less succinct, and for many channels has up to 9 channels listed, even when in reality there are only 3. By adding extra channels, with the same specs, just different codes, this file should hopefully be ablt to be used, even when stations such as NARR are downloaded with station codes differeing from the normal EHE etc. 
+
+In the past HOLS, LOCU and NARR have all be found to have channels labelled DHE, DHN etc. at certain periods in time, and NARR has also been found to have channels labelled ENE, ENN etc. 
+
+This file attempts to allow for these discrepiences, without having to correct each of these channel names individually (as can be done in a fairly simple python code - in the same way we have to correct the 'network' parameter to 01)

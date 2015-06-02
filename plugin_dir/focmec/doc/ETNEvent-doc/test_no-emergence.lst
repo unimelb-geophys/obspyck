@@ -1,0 +1,87 @@
+  Fri Jun 19 10:49:02 2009  for program FOCMEC
+ Event 8703270729 1 errors max not including 3 ep polarities
+ Input from a file test_emergence.dat
+ 8703270729305935N3376 84W1384 1954   31 42 12  24
+
+ Statn  Azimuth  TOAng   Key  Log10 (S/P)  NumPol  DenTOAng  Comment
+  GBTN     9.0    148.0   C
+  TLT    189.0    121.0    
+  ETT    218.0    118.0   D
+  ORT    350.0    114.0   C
+  TKL     76.0    109.0   C
+  TQTN   264.0    110.0   D
+  RCT    238.0    110.0    
+  HPKT    38.0    107.0    
+  DCT    197.0    104.0    
+  WSSR   118.0    102.0   C
+  BHT    296.0    101.0   C
+  WMTN   243.0    100.0   D
+  CRTN    26.0     99.0   D
+  RHT    228.0     99.0   D
+  LMTN    64.0     98.0   D
+  BBG    153.0     98.0   C
+  GMG    207.0     97.0   D
+  ONTN   349.0     96.0   C
+  ANTN   307.0     80.0   C
+  RCG    238.0     80.0   D
+  CPO    272.0     80.0   D
+  CCVA    24.0     80.0   D
+  SMTN    46.0     80.0   D
+  BRTN    54.0     80.0   D
+  PDTN   258.0     80.0   D
+  LKGA   228.0     80.0   D
+  TVG    217.0     80.0    
+  ABTN   282.0     80.0   C
+  TRYN   101.0     80.0   C
+  SLTN    62.0     53.0   D
+  BEV    140.0     53.0    
+  GFM     74.0     53.0   D
+  OCA    243.0     53.0    
+  BENN    89.0     53.0   D
+  PRM    133.0     53.0    
+  CHF    138.0     53.0    
+  MSAL   251.0     53.0   D
+  CH6    139.0     53.0    
+  ATL    182.0     53.0    
+  BGKY   309.0     53.0    
+  SHTN   268.0     53.0   D
+  SOKY   325.0     53.0   D
+  L6KY   349.0     53.0    
+  PKNC    78.0     53.0   D
+  ETG    162.0     53.0    
+  BHKY   355.0     53.0    
+  JSC    117.0     53.0    
+  PLVA    65.0     53.0   D
+  PKKY    18.0     53.0   D
+  LHS    110.0     53.0    
+  PUV     61.0     53.0    
+  SMKY   308.0     53.0    
+  PWLA   261.0     53.0   +
+  NAV     57.0     53.0    
+  MOTN   290.0     53.0   C
+  HWV     52.0     53.0   +
+  BLA     61.0     53.0    
+  VWV     57.0     53.0   +
+ Not including emergent polarity picks
+ Polarities/Errors:  P 034/01  SV 000/00  SH 000/00
+ There are no amplitude ratio data
+ The minimum, increment and maximum B axis trend are   282.35    5.00  283.00
+ The limits for the B axis plunge are    45.00    5.00   45.10
+ The limits for the angle of the A axis are    80.00    5.00   81.00
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     82.95   275.24    44.56
+     Dip,Strike,Rake     45.86   178.35   170.15   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     88.35    44.14   185.24     7.05
+     Lower Hem. Trend & Plunge of B    282.35    45.00
+     Lower Hem. Trend, Plunge of P,T     38.69    23.93   147.07    35.40
+     MRR = 0.17  MTT =-0.04  MPP =-0.13  MRT =-0.69  MRP =-0.02  MTP = 0.71
+N angle with plane defined by vertical & B trend: 80.0
+
+ P Polarity error at  TKL 
+ P Polarity weights:  1.00
+  Total P polarity weight is  1.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+ There are   1 acceptable solutions

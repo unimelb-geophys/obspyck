@@ -1,0 +1,13 @@
+  Fri Jun 19 13:54:59 2009  for program FOCPLT
+ Plotting P nodal planes
+ 
+  Solutions input from file focmec_4err.out
+   Fri Jun 19 10:18:41 2009  for program FOCMEC
+  Event 8703270729 4 errors max
+  Input from a file 8703270729.dat
+  8703270729305935N3376 84W1384 1954   31 42 12  24
+  Polarities/Errors:  P 037/04  SV 000/00  SH 000/00
+  There are no amplitude ratio data
+  The minimum, increment and maximum B axis trend are     0.00    5.00  355.00
+  The limits for the B axis plunge are     0.00    5.00   90.00
+  The limits for the angle of the A axis are     0.00    5.00   85.00

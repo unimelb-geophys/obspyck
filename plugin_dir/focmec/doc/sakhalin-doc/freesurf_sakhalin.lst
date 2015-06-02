@@ -1,0 +1,24 @@
+  Sun Jul 20 13:36:13 2008  for program freesurf
+ Sakhalin event stations
+  0.60000002      =  VS to VP ratio     36.869900      is the critical angle
+  Avoid SV emergence at or above critical angle
+  
+ BLA  Emerg P Angle:   14.204000       S Angle:   16.393000    
+ P amplitudes on Z and R:   1.9219614      0.58512026    
+ S amplitudes on Z and R:  0.66016948       1.8570422    
+   1.0349584      = SV(R)/P(Z) correction
+   2.9113152      = SV(Z)/P(Z) correction
+  0.96098071      = SH(T)/P(Z) correction
+   1.0769814      = SV(R)/SH(T) correction
+   3.0295250      = SV(Z)/SH(T) correction
+   2.8129780      = SV(R)/SV(Z)
+  
+ CCM  Emerg P Angle:   15.394000       S Angle:   17.541000    
+ P amplitudes on Z and R:   1.9085674      0.63228554    
+ S amplitudes on Z and R:  0.70210618       1.8372395    
+   1.0388234      = SV(R)/P(Z) correction
+   2.7183459      = SV(Z)/P(Z) correction
+  0.95428371      = SH(T)/P(Z) correction
+   1.0885897      = SV(R)/SH(T) correction
+   2.8485720      = SV(Z)/SH(T) correction
+   2.6167545      = SV(R)/SV(Z)

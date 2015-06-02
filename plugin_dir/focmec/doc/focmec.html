@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>FOCMEC README: J. A. Snoke</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<table width="600" align = "center" BORDER="0" Cellpadding="0">
+<tr>
+<td>
+<CENTER>
+<H2>FOCMEC: README</H2>
+</CENTER>
+<p>
+This package contains software for determining and displaying
+double-couple earthquake focal mechanisms. Input are polarities (P, SV , SH)
+and/or amplitude ratios (SV/P, SH/P, SV/SH). The main program, <i>Focmec</i> (coded in
+Fortran 77), performs an efficient, systematic search of the focal sphere and
+reports acceptable solutions based on selection criteria for the number of
+polarity errors and errors in amplitude ratios. The search of the focal
+sphere is uniform in angle, with selectable step size and bounds. The
+selection criteria for both polarities and amplitudes allow adjustment through
+weightings for near-nodal solutions. Published applications include determinations of
+best-constrained fault-plane solutions for suites of earthquakes recorded at
+local to regional distances, analysis of large earthquakes observed at
+teleseismic distances, and the use of recorded polarities and relative amplitudes
+to produce waveform synthetics.
+
+<p>
+All paths in this documentation are defined relative to the directory <i>./focmec</i>, which is created by uncompressing and expanding the tarball <i>focmec.tgz</i>.  This file is accordingly <i>./doc/focmec.html</i>.  The FOCMEC manual is <a href="./focmec_manual.pdf"><i>./doc/focmec_manual.pdf</i></a>.  (For active links to work, one must have opened this file from directory ./doc.)
+
+<p>
+To build the libraries, tables, and executables, it should suffice to go to <i>./src</i> and (in a Unix system that includes the <i>csh</i> shell) enter <i>build_package</i>. The script is set to use the <i>gfortran</i> compiler, so if you are using a different compiler, you have to edit the first few lines so that it defines <i>FCMP</i> appropriately. If the script runs with no errors, the last thing shown on the screen is a compile/link line for program <i>vwbeetle</i> (a test program for the graphics package). Executables and graphics scripts <i>sgfxxx</i> will be in directory <i>./bin</i>. Scripts for testing parts of the package are in <i>./tests</i>.  To delete all executables and libraries, cd to <i>./src</i> and enter &ldquo;make clean&rdquo; (without the quotes).  See the manual and/or the documentation listed below for more details.
+
+<h3>Other documentation</h3>
+<ul>
+<li><p><a href="./update.html">Update history for the FOCMEC package</a>
+<li><p> <a href="./input.html">Input format for programs <i>Focmec</i> and <i>Focplt</i></a>
+<li><p><a href="./sakhalin.html">Documentation for the Sakhalin Island event data set</a>
+<li><p><a href="./etn-event.html">Documentation for the Eastern Tennessee event data set</a>
+<li><p><a href="./graphics.html">Graphics overview</a>.
+</ul>
+<p> Subdirectories of <i>./doc</i> have output files from the test runs done in both <i>./tests</i> and <i>./sample_runs</i>.
+
+<p> The appropriate reference for this package is
+<blockquote>
+Snoke, J.A. (2003). FOCMEC: FOcal MEChanism determinations. International Handbook of Earthquake and Engineering Seismology (W.H.K. Lee, H. Kanamori, P.C. Jennings, and C. Kisslinger, Eds.), Academic Press, San Diego, Chapter 85.12. 
+</blockquote>
+
+</td></tr></table>
+</BODY>
+</HTML>

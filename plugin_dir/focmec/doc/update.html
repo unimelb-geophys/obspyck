@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>FOCMEC: Updates</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<table width="620" align = "center" BORDER="0" Cellpadding="3">
+<tr>
+<td>
+<h2 align="center">FOCMEC: Update History</h2>
+<p>Earlier versions of this software package could be built and run on
+IBM/CMS, PDP/RSX, VAX/VMS, Sun snuos, and Windows 98.  The current version runs on Sun Solaris, Linux, and Mac OS X (PPC and i686).  The programs are written in Fortran 77 and compile successfully using gfortran, g77, and Sun's f77.   Two programs written in C (gcc) transform graphics plot files from the Sac Graphics Format (SGF) to postscript (<i>sgftops</i>) and swap the byte order of the binary SGF files (<i>sgfswap</i>).  Unix scripts (csh) are included for displaying plots on the screen and for converting plot files from postscript to EPS or PDF.  The plot-conversion scripts require the external program <i>ghostscript</i>.    If the user has or prefers a different postscript viewer for displaying plots, it is easy to modify the plot-display script.  Except for these plot-conversion scripts, X-Windows capability is not required by the <i>FOCMEC</i> package.
+<pre>
+June 2009: Program sgftops has been updated, but in ways that should be 
+  transparent for FOCMEC package plot files.  Program sgfswap has been
+  added; it swaps the byte order in the binary .sgf plot files.  The 
+  write-up in the manual on graphics has been moved to Appendix D.
+  Although the use of the FOCMEC search parameter worked, the description of
+  it was incomplete and the printed output regarding it in Focmec runs
+  was imprecise.  That has been corrected, and ANGLE has been added to the
+  output of runs of Dsretc.  This can be useful when doing runs of Focmec
+  with a single solution provided by an external source.  In the application
+  within this package, it is for the CMT solution for the Sakhalin Island
+  event.
+  The discussion of the Sakhalin Island event example has bee expanded.  Now
+  it shows explicitly how well (in this case) one can do with a sparse
+  broadband network using S polarities and amplitude ratios.  Previously the
+  showed only that the solution could be improved by adding the BB data to
+  P-wave polarity data.
+  The printer plots produced by program Dsretc did not work on some compilers.
+  Adding a "save" to two subroutines fixed that.
+  In Focplt, if one is adding solutions from a file after adding other
+  solutions, there was no prompt to verify it was the correct file.  Now it
+  does (changes in solplt.f).
+  The command "make clean" in ./src now deletes all executables and libraries.
+  Calls to symbol for actual symbols got warnings in f77.  No longer.
+April 2009: The wording in prompts in program focplt have been modified
+  to remove ambiguities about adding solutions to plots.  One can add
+  several sets of solutions for the same set of focal mechanisms or different
+  focal mechanisms to the same plot.  One answers yes to the prompt
+  "Add more solutions to same plot?"
+November 2008: If INFO was left out for a ratio, did not read line.
+  Now it does.  In Oksol.f:  If both numerator and denominator are near the
+  nodal surfaces (called N&D), the number of ratios is decreased by one.
+  If the number of remaining ratios is not more than the number
+  of bad ratios, the solution is classified as unacceptable.
+August 2008: A code change in subroutine finrng.f of program remodl solved an 
+  instability that occurred when using the Sun f95 compiler.
+July 2008:  I have dropped SAC graphics to maximize portability.  
+  Furthermore,  the way I had used SAC graphics was through a Fortran
+  library last updated prior to 1994 (when SC2000 was introduced) 
+  and is specific to only a couple of operating systems (Sun OS and
+  some versions of Linux).  What is lost is the ability to edit plots
+  online when running program focplt.  One can  still add labels, but
+  only through iterations of runs such as those included in the 
+  sample_runs sub_directories.  The system has been tested on Mac OS X
+  (both PPC and i686), Linux, and Sun Solaris.  Two programs have been
+  renamed: fileprep is now ratio_prep and fmecprep is now focmec_prep.
+January 6, 2003: Plot files without needing the SAC graphics package:
+  I have written and tested (on Sun Solaris only) a modified set of
+  subroutines which can produce an SGF-format plot file without using
+  the SAC library, and the executables will be more portable as they
+  can be built with the -Bstatic switch.  Unlike the SAC routines, one
+  gets only a disk file -- no terminal display.  The output file is
+  still in the unformatted SGF format, but the conversion programs to
+  postscript which are based on sgf2ps.c look like they should not be
+  system dependent.  I will try to test this on PC/Linux, but have not
+  done it as of this writing.  To use this feature, go to subroutine
+  fmplotsub_nosac and enter "make" (no quotes).  To build program focplt,
+  go to subdirectory src and enter "clp_nosac focplt" which should create
+  a focplt binary and put it in subdirectory bin.  The scripts for running
+  focplt must be modified as one is not asked for choices for the plot
+  output (screen, named disk file, temp.sgf disk file) as the program is
+  hard wired to create a disk file named temp.sgf.  
+September 12, 2002:  The comment lines in fmecprep.f implied that files
+  were read in the opposite order from the way they are so I fixed that.
+  (the first file read in is the output from fileprep, the second is a
+  stripped-down Focmec input file.  Also, in the Appendix in 
+  focmec_manual.pdf describing the input polarity format, there were 
+  questions about the directions which is hopefully cleared up with some 
+  rewording.  The biggest problem comes from the fact that "C" stands for 
+  "Compression" which means up on the vertical which in fact corresponds to 
+  dilatation at the source.
+September 10, 2002:  Corrected some typos in focmec_manual.pdf and added a
+  "beachball" figure and discussion in Appendix B.
+late July 2002:  I had not paid adequate attention to the problems of
+  using SV polarities and amplitudes near or above the critical emergence
+  angle.  I have added an appendix in focmec_manual.pdf and put in caveats in
+  programs fmecprep and freesurf to address this.  The bottom line is
+  that one should use SV near or above the critical angle only with
+  great care.
+5 July 2002: Some compilers do not like the way I had used
+  CVALUE -- CVALUE(1:NFILE) with NFILE defined on the right-hand side.
+  I also made other I/O routines less compiler dependent.
+30 May 2002: Bug fix:  I had forgotten to modify a subroutine for program
+  focplt (solplt.f) taking into account a change in subroutine fmreps.f
+  made in March.  Only program focplt was affected.
+March 2002: Emergent polarity picks can now be used in <i>Focmec</i> if the user
+  so chooses.  Previously they could only be displayed in <i>Focplt</i> plots.
+March 2002:  Added an option to program dsretc so that one could use
+  moment-tensor input (CMT convention).  It is an adaptation of Bob
+  Herrmann's programs mteig and mtdec.  Instead of using <i>Numerical
+  Recipes</i> subroutine, I used the original <i>EISPACK</i> versions.
+October 2001:  Code was changed slightly in several subroutines to increase
+  compatibility among various compilers.
+September 2001:  Using Microsoft Fortran 4.0 Powerstation, I was able to 
+  create the unformatted sequential file iasp91.hed and direct access 
+  iasp91.tbl which could then be read by a revised version of fileprepL.f.  
+  (I found that the unformatted, sequential access file could be read only 
+  by programs built using the same PC compiler as was used to create the 
+  file.)  All this was done using Virtual PC v3 on a Mac G4 running OS9.)
+August 2001: Alexey A. Lyubushin, Dr.Sci., United Institute of the Physics 
+  of the Earth, Russian Academy of Sciences, Moscow, created PC executables 
+  of all but the plotting program focplt and program fileprep in the FOCMEC 
+  programs.  The programs compiled and ran on both Digital Visual Fortran 
+  under MS  Windows-98 and GNU g77 under PC Solaris 5.8.  These have not 
+  been exhaustively tested.
+3 August 2001: When building the fmsub library, one user reported that
+  FOCMEC.INC was empty.  It had been a soft link to ../src/FOCMEC.INC.
+  I replaced the link with a direct copy.
+28 July 2001: Added source and (Solaris) executable for a program to
+  create a Focmec input file from Hypoellipse output.  (hypo2foc)
+21 July 2001: Program radiat wrote out the wrong SH sign convention
+  as a comment to output.  Now it says positive is left, back to
+  source (not station).  Only comment was wrong.  The radiation figure
+  in Appendix B of focmec_manual.pdf had arrows pointing the wrong way for
+  the SH polarity.  That has been fixed.  No code was affected.
+26 May 2001: Some had problems with Fortran function value.f,
+  so changed it slightly.  Also took out PARAMETER(tab,char(9))
+  in two functions as that was not recognized by some compilers.
+December 2000: The author no longer has a machine running sunos, so
+  the executables for that platform will not be updated after this date.
+April 2000: Replaced the examples from previous versions with two new
+  examples: one for a P polarities only from a regionally recorded
+  event in eastern Tennessee, and the other for the teleseismically
+  recorded 1990 deep-focus Sakhalin Island deep-focus event.  These
+  can be found in directory sample_runs.  This was part of a preparation
+  of the package to appear as a subchapter in the IASPEI centennial
+  handbook.
+28 July 1998: For solaris 2 I had not been able to create or 
+  overwrite plot files.  Found the problem: subroutine zopenc.c
+  in the SAC library.  Not clear why it ever worked.  Patch is
+  described in file sacfix.html.
+27 July 1998: In test_runs/blaeqk.dat, the comments part of the
+  entries for the ratios input data imply ratios that are not
+  correct.  These are not used, but they are misleading.  The
+  similar comments in test_runs/e393.dat are okay in that they
+  lead to ratios which are consistent with the entries.
+19 July 1997: Compiled/linked programs for solaris 2.5.1 (sun).
+  Only changes required were in the compile-link scripts --
+  leaving out the -Bstatic switch and, in ~/src/cl_plot_src,
+  leaving out three plot libraries which do not exist in solaris 2.
+  Used the sac solaris 2 library (gotten by ftp from LLNL).
+27 February 1997: If numerator is near nodal surface, now returns
+  correct sign in TOP.  Change is in subroutine lratio.f
+7 January 1997: Corrected an error in lratio.f for solutions near a
+  nodal surface for either the numerator or the denominator
+  but not both.  Previously the ratio returned was not updated
+  for such cases, so was what had been found in the previous call.
+3 August 1993:  Changed rules for nodal surfaces with ratios.
+  Now have separate CUTP and CUTS for lower bounds of radiation
+  factors.  No more "FACTOR".  If numberator or denominator
+  is near the nodal surface, use cutoff value when calculating
+  ratio.  If both are near, still treat it as indeterminate and
+  do not count towards error total.  Some changes in output format.
+  See oksol.f for details.
+20 June 1993:  Corrected an error in focinp.f which kept the option
+  for separate P and S polarity error limits from working
+  correctly.  Also put in a "belts and braces" addition so that
+  if one use the V, H, or S key for ratios bu did not put in the
+  S angle, it would not come out as zero.  Made cosmetic changes
+  to a couple of other subroutines.
+15 May 1992:  Corrected an error in OKSOL, changed name of
+	listing file from lp.lst to focmec.lst
+28 August 1991:  sun version including SV polarities and SV/SH ratios
+9 July 1990:  Put in limits for the range of ratios to be tested to
+  allow for near-nodal solutions.  Routines affected are FOCINP,
+  OKSOL, OKRAT, LSPRAT, and FOCMEC.INC.  Also, took out the fancy
+  calculating for 0/0 in ratios.  It's nice theoretically, but not
+  for comparisons with data.  Also, took out Kisslinger's last-squares
+  adjustment for the solution involving ratios as, as written, it
+  did not take into account polarities and tended to confuse more
+  than help.  In FOCPLT (the companion plotting program), the ratio
+  ranges required a change in the input for SOLPLT.  PRPLOT also had
+  cosmetic changes. 
+22 February 1990:  Changed an2dsr, v2trpl, oksol to include "weird"
+  cases correctly (although there were no errors before).  Replaced
+  DPSTRK with AN2DSR in OKSOL.
+COMMENTS UPDATE 16 OCTOBER 1989
+Code was originally written in Fortran 77 for a PDP 11/34 operating
+  under RSX version 4.1.  The version here is in Fortran 77 for
+  a VAX (VMS)
+In addition to the include file FOCMEC.INC, subroutines from two
+  source libraries are used, FMLIB.OLB and GENSUB.OLB.  To build
+  these libraries and to link FOCMEC along with the other programs
+  in the package, use the command file BUILD.COM
+Subroutines in GENSUB used in FOCMEC are BELL, CVALUE, IYESNO, LENC,
+  PRINT, PRINTX, TIMDAT, TRUTH, and VALUE (entries RVALUE and IVALUE)
+Subroutines in FMLIB used in FOCMEC are ANTPIN, AN2DSR, AN2MOM,
+  DPSTRK, DSRIN, FLTSOL, FMLSQ, FMREPS, FOCINP, GMPRD, LSPRAT, 
+  OKPOL, OKRAT, OKSOL, SRCHFM, STTIST, TA2XY, TRPL2V, and V2TRPL
+Digital F77 routines include: SECNDS, OPEN, ASSIGN, CLOSE,
+  TIME, DATE
+END OF COMMENTS UPDATE 16 OCTOBER 1989
+12 October 1989:  Cleaned up code to make a little less dependent
+  on VAX.  The subroutines are now in three large files, FMLIB.FOR,
+  GENSUB.FOR, and PLOTSUB.FOR.  FMLIB contains all subroutines which
+  have little or no system dependence - including a large SYMBOL
+  routine.  Not all subroutines are for FOCMEC, which has no
+  plotting, for example.  The subroutines are for FMECPREP, FOCPLT,
+  SOLSORT and SVPRAT as well.  GENSUB has some "primitives" which
+  may have some system dependence.  One new feature here is that
+  if the program is run from a command file, such as RUNFOCMEC.COM,
+  one can put a comment on the same line as the entry if a tab is
+  used as a delimiter or a space is used if the input is not
+  character data.  The convention for defaults in prompted input is
+  to use [] to enclose the entry.  Default means one responds with
+  a carriage return from a terminal or a null entry or tab from a
+  command file.  PLOTSUB contains my versions of PLOTS and PLOT,
+  which, while calcomp compatible in calling arguments, are tailored
+  to my personal conventions for disk file formats and a restricted
+  set of terminals.  If your own plot library is linked BEFORE the
+  other files, you should be able to use FOCPLT with little
+  modification.  To build the programs, simply enter @BUILD.  The
+  command file makes libraries and links all the programs.  If you
+  want only a subset of the programs, you can edit BUILD.COM
+  accordingly. 
+2 September 1986:  Changed SRCHFM so that sort of focal sphere
+  is more nearly equal area (thanks to Tim Long and Rick
+  Williams for noting that it was not).  Also tried to
+  make things more standard FORTRAN 77 by getting rid of
+  BYTE variables and replacing READ and WRITE to unit 5
+  with ACCEPT and TYPE.
+10 June 1986:  in LSPRAT fixed case for when both numerator
+  and denominator in S/P ratio are zero
+16 January 1986:  Tidied up FOCINP.  Introduced the 
+  interactive functions RVALUE and IVALUE, which are
+  now entries in VALUE.
+6 October 1985:  For the V and H S/P ratio input lines in
+  FOCINP, added the S take-off angle as a separate entry.
+  Previously just assumed it to be the same as the P angle.
+  This results in a change in the input format so that old
+  input files will not work.  The R format (simple SV input)
+  remains unchanged.
+27 September 1985:  Added a relative weighting option
+  for polarities.  If chosen, the total number of error
+  is entered as before but as a real variable and a
+  threshold weight is asked for.  Each polarity error is
+  weighted by the absolute value of the radiation factor
+  or the threshold, whichever is larger.
+12 August 1985:  Added option of a total number of polarity
+  errors rather than simply choosing numbers of P and
+  S errors separately.
+  Increased COMMENT field for ratio input to 20 and
+  changed format statements accordingly.
+  Replaced a DO loop in FOCINP with a GOTO loop so that
+  emergent polarities do not count against total possible.
+27 JULY 1985:  Added SH polarity.  For the key one enters
+  < r > (for left or right respectively) for first motion (back
+  to event).  Also, added moment tensor representation to output in
+  listing file  (Dziewonski & Woodhouse convention, unit
+  scalar moment)
+$ December 1984:  Eliminated double solutions when plunge
+  of B is 0 degrees.  (Only allowed trend to vary
+  between 0 and 180 degrees.  This could affect
+  searches for small parts of the focal sphere.)
+23 October 1984: Added the possibility for using SH
+  amplitudes instead of only SV on the vertical.
+  Also, if the input line key is V (for SV) or H
+  (for SH), the program expects to find a polarity
+  for the S and a comment following the log(ratio).
+  Entering R for the key will work as before: assumes
+  the ratio is for SV on vertical and there is no
+  polarity or comment.  The output now includes the
+  theoretical S polarity, but it does not use it in
+  the search.  Another small change which only acts
+  to speed up the search is that for a B axis plunge
+  of 90 degrees there is only one trend tried.
+  The SH amplitude case has not been checked yet.
+  
+Arthur Snoke   Virginia Tech
+</pre>
+</td></tr></table>
+</body>
+</html>

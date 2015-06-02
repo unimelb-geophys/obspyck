@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>FOCMEC: Sakhalin Island Event</TITLE>
+</head>
+<BODY BGCOLOR="#ffffff">
+<table width="600" align = "center" BORDER="0" Cellpadding="3">
+<tr>
+<td>
+
+<h2 align="center">FOCMEC: <i>P</i> &amp; <i>S</i> polarities and amplitude ratios</h2>
+<p>This page supplements the discussion in section IV B of the <a href="./focmec_manual.pdf">FOCMEC manual</a>: the application of the <i>FOCMEC</i> package to find the focal mechanism for
+the 12 May 1990 M=6.5 z=611 km  Sakhalin Island earthquake using two data sets: (1) 190 <i>P</i>-wave polarities, and (2) <i>P</i> and <i>S</i> polarities plus amplitude ratios from eight broadband stations.  The discussion is a revisit of my earlier study.  (My 1990 study contributed
+to the realization that the vertical component at station HRV and all
+three components at station KIP had reversed polarities.  The reversals at KIP was not realized at the time of the 1990 presentation, as can be seen from the abstract reproduced in <a href="./snoke-esssa90.pdf">my 1990 ESSA abstract</a>.)  Directory <i>./sample_runs/sakhalin</i> includes drivers and input, files for an update of that study.</p>
+
+<p>
+The driver files for programs <i>Focmec</i> and <i>Focplt</i> are Unix csh scripts that include
+comments.  The programs can be run interactively without using scripts, but using the scripts allows
+quick editing to fine-tune runs.  For <i>Focmec</i>, the first run was done
+with eight unity-weighted polarity errors.  An examination of the output file indicated that
+four was the minimum that could give a well-constrained solution.</p>
+
+<p>As with the sample runs for the Eastern Tennessee event, the <i>Focplt</i> driver scripts as written end with call to produce first a screen display of the plot and then to convert the SGF plot file to a PDF file.  See Appendix D in the manual for more details on graphics in the <i>FOCMEC</i> package.</p>  
+
+<p>
+Even though Q corrections were not used in this study, for completeness, a <i>Focmec_prep</i> run is included that has
+corrections for attenuation in the <i>S/P</i> ratios.  In each ratio line there are
+four more numbers, with comma delimiters: Qs,Qp,Fs,Fp, where Fs and Fp are the frequency at which the amplitudes
+are measured.  The relevant files in <i>./sample_runs/sakhalin</i> all have a Q in the filespec, and the format for a line including attenuation data can be seen in input data file <i>./sample_runs/sakhalin/sakhalin_8sta-Q.dat</i>.
+</p>
+
+<p>
+The CMT best-double-couple solution was not among those found in any of the <i>Focmec</i> runs, so it is probably useful to describe the method I used to create an input file that would show errors in the input data set polarities in ratios for such a solution.  
+When <i>Focmec</i> searches the focal sphere, it does it for a range of values for the
+trend and plunge of the <b>B</b> axis and a range for the angle that the <b>A</b> axis makes
+with the plane defined by the vertical (down) and the <b>B</b>-axis trend. Given a double-couple solution in any form,
+the program <i>Dsretc</i> can be run to find the trend and plunge for the <b>B</b> axis.  Starting in June 2009, the output includes the required angle of the <b>A</b> axis.  Because of the way the grid search is done, that angle may actually be fore the <b>N</b> axis rather than the <b>A</b> axis.
+
+<p>The <a href="./sakhalin-doc/CMT_solution.pdf">CMT solution page</a> gives angles to the nearest degree.  I ran <i>Dsretc</i> for all three choices: each of the two fault planes and the trend &amp; plunge for the <b>P</b> (third eigenvector) and the <b>T</b> (first eigenvector) and compared what it predicted for the other two sets.  The trend &amp; plunge input gave the best consistency, so that was used in the input file: <i>./sample_runs/sakhalin/rfocmec_all-CMTFR</i>.  (In this case, it is indeed the <b>A</b> axis that must be used.  If the 15.1 degrees did not find the desired solution even with a large number of allowed errors, one would have rerun <i>Focmec</i> using 74.9 degrees.)
+
+<p> Prior to July 2008, program <i>Ratio_prep</i> was named <i>Fileprep</i>, and program <i>Focmec_prep</i> was named <i>Fmecprep</i>.
+
+</td></tr></table>
+</body>
+</html>

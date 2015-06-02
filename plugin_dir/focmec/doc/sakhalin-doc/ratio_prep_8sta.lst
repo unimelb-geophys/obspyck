@@ -1,0 +1,8 @@
+  Mon Jul 21 14:23:38 2008  for program ratio_prep
+ Station locations from ./stations.loc
+ Hypocenter and Station names from ratio_prep_8sta.inp
+ Latitude:   49.023998      Longitude:   141.93700      Depth:   611.00000    
+ Model Name: ../../lib/iasp91
+ fmecprep input filespec: focmec_prep_8sta.inp
+ Sakhalin: 12 May 1990   Includes SV and SH/SV iasp91  No SKS arrivals
+  0.57931036      is the S/P velocity ratio at the surface

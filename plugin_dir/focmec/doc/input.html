@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>FOCMEC input convention</TITLE>
+</head>
+<BODY BGCOLOR="#ffffff">
+<table width="600" align = "center" BORDER="0" Cellpadding="3">
+<tr>
+<td>
+
+<center><h2>Input conventions and format <br>for <i>focmec</i> and <i>focplt</i></h2></center>
+
+<p>
+This is a description of the input format of polarities and ratios for program <i>focmec</i> (done in 
+subroutine <i>focinp</i>) for determining acceptable focal mechanisms.  The same input is used in program <i>focplt</i> (through 
+subroutine <i>prplot</i>) for displaying graphically first motions and/or ratios, fault planes, and nodal surfaces.</p>
+<pre>
+        READ(1,'(A)') COMMNT			!  First line input file
+200     READ(1,5,END=300,ERR=500) STA,AZIN,TOANG,SENSE,
+     .    RATLOG,SVSH2,STOANG,INFO
+5       FORMAT(A4,2F8.2,A1,F8.4,1X,A1,1X,F6.2,1X,A) 
+
+STA is a name for the station.  Up to four characters. Not used.
+AZIN is the station azimuth (degrees) measured from the epicenter
+TOANG is the takeoff angle (degrees) of S for S polarity. Otherwise
+     the takeoff angle of P.  TOANG measured relative to down
+SENSE is a one-character key for polarity or ratios 
+
+Virginia Tech Symbol conventions:
+  C = compression at station (plotted as a hexagon symbol number NS = 1)
+  U = same as C (up on vertical)
+  D = dilatation --- down on vertical (plotted as a triangle NS=2)
+  + = emergent compression  (NS=3) (optionally included in Focmec)
+  - = emergent dilatation  (optionally included in Focmec
+  e = emergent P arrival  
+  > = SH first motion to right (back to event, facing station) impulsive
+  < = SH first motion to left (back to event, facing station) impulsive
+  L = same as <
+  R = same as > (Note: earlier versions used R for SV/P ratio)
+  F = SV first motion away from event impulsive
+  B = SV first motion towards event impulsive
+    The SH and SV first motions are plotted as oriented arrows (NS=6)
+  l = SH first motion to left (back to event) emergent
+  r = SH first motion to right (back to event) emergent
+  u = emergent SH arrival
+  V = Log10(SV/P)  (NS=4) (plotted as an X)
+  H = Log10(SH/P)  (NS=4) (plotted as an X)
+  S = Log10(SV/SH) (NS=4) (plotted as an X)
+If one wants to have errors marked, follow the polarity or ratio with a 
+  duplicate line with a E in the symbol position.  The error will then be 
+  flagged as a square superimposed on the polarity or ratio.
+  </pre>
+  <p>
+  No terminator line is needed.    MAX in FOCMEC.INC is the maximum number
+  of alowed ratios plus polarities.</p><p>
+If SENSE is R, V, or H:</p>
+<ul>
+<li>  RATLOG is the log10 (S/P)</li>
+<li>  SVSH2 is the polarity of SV or SH.  Not used, but is shown in the
+    listing file along with the calculated values.  Convention used
+    for the calculated ones are L and R for SH, B and F for SV</li>
+<li>  STOANG is the S takeoff angle -- must be entered explicitly if V
+    or H are used.  If R is used, assumed the same as PTOANG</li>
+<li>  INFO is a field of up to 20 characters.  If the input file were
+    prepared by <i>focmec_prep</i>, it would tell the numerator and denominator
+    in the amplitude ratio.  (See <i>./sample_runs/sakhalin/</i> for a worked-out example.)</li>
+</ul>
+
+</td></tr></table>
+</body>
+</html>

@@ -1,0 +1,126 @@
+  Mon Jul 21 14:27:17 2008  for program focmec_prep
+ focmec_prep input file from file focmec_prep_8sta.inp
+  Sakhalin: 12 May 1990   Includes SV and SH/SV iasp91  No SKS arrivals
+   0.57931036      is the S/P velocity ratio at the surface
+ Stn    Dist     Az       Ptoa     Stoa     Pemrg    Semrg    TT(P)    TT(S)
+ BLA   86.2757   32.619   28.006   30.704   14.204   16.393  698.215 1283.542
+ CCM   81.3335   39.737   30.530   33.043   15.394   17.541  674.010 1235.802
+ COR   60.8172   54.650   40.783   42.382   19.959   21.875  554.439 1006.454
+ HRV   84.2103   24.219   29.159   31.687   14.751   16.878  688.350 1263.971
+ KEV   52.4736  336.546   45.226   46.266   21.775   23.539  497.461  899.859
+ KIP   54.5793   97.840   44.084   45.274   21.319   23.123  512.288  927.458
+ PAS   70.9230   59.825   35.685   37.792   17.748   19.798  617.049 1125.443
+ TOL   86.5080  334.453   27.950   30.592   14.177   16.337  699.307 1285.707
+ Input focmec data filespec sakhalin_8sta-Q.dat
+ focmec input filespec focmec_8sta-Q.inp
+  12-MAY-90 Sakhalin Island Event:  BLA, DMC, Q test
+ Input: BLA  D
+ BLA    32.62   28.01D
+ Input: BLA  R
+ BLA    32.62   30.70R
+ Input: BLA  F
+ BLA    32.62   30.70F
+ Input: BLA  H R 84,15.2,500,1000,0.01,0.01
+ Q correction:   1.0604701    
+ Observed ratio:   5.5263157      Free-surface:  0.96325374    
+ BLA    32.62   30.70H  0.7517 R  28.01 84,15.2,500,1000,0.01,0.01
+ Input: BLA  S F 1.04,5.56
+ Observed ratio:  0.18705036      Free-surface:   1.0680509    
+ BLA    32.62   30.70S -0.6994 F  30.70 1.04,5.56
+ Input: CCM  D
+ CCM    39.74   30.53D
+ Input: CCM  R
+ CCM    39.74   33.04R
+ Input: CCM  B
+ CCM    39.74   33.04B
+ Input: CCM  H R 53.5,17,500,1000,0.01,0.01
+ Q correction:   1.0580982    
+ Observed ratio:   3.1470587      Free-surface:  0.95694655    
+ CCM    39.74   33.04H  0.5033 R  30.53 53.5,17,500,1000,0.01,0.01
+ Input: CCM  V B 12.6,17,500,1000,0.01,0.01
+ Q correction:   1.0580982    
+ Observed ratio:  0.74117649      Free-surface:   1.0314937    
+ CCM    39.74   33.04V -0.0921 B  30.53 12.6,17,500,1000,0.01,0.01
+ Input: COR  D
+ COR    54.65   40.78D
+ Input: COR  R
+ COR    54.65   42.38R
+ Input: COR  B
+ COR    54.65   42.38B
+ Input: COR  H R 208,15.1,500,1000,0.01,0.01
+ Q correction:   1.0468850    
+ Observed ratio:   13.774834      Free-surface:  0.92845732    
+ COR    54.65   42.38H  1.1267 R  40.78 208,15.1,500,1000,0.01,0.01
+ Input: COR  V B 58.8,15.1,500,1000,0.01,0.01
+ Q correction:   1.0468850    
+ Observed ratio:   3.8940396      Free-surface:   1.0393164    
+ COR    54.65   42.38V  0.6270 B  40.78 58.8,15.1,500,1000,0.01,0.01
+ Input: HRV  D
+ HRV    24.22   29.16D
+ Input: HRV  R
+ HRV    24.22   31.69R
+ Input: HRV  B
+ HRV    24.22   31.69B
+ Input: HRV  H R 60,21,500,1000,0.01,0.01
+ Q correction:   1.0594951    
+ Observed ratio:   2.8571429      Free-surface:  0.96041352    
+ HRV    24.22   31.69H  0.4635 R  29.16 60,21,500,1000,0.01,0.01
+ Input: HRV  S B 2.6,7.9
+ Observed ratio:  0.32911390      Free-surface:   1.0721394    
+ HRV    24.22   31.69S -0.4524 B  31.69 2.6,7.9
+ Input: KEV  D
+ KEV   336.55   45.23D
+ Input: KEV  L
+ KEV   336.55   46.27L
+ Input: KEV  B
+ KEV   336.55   46.27B
+ Input: KEV  H L 41.5,39,500,1000,0.01,0.01
+ Q correction:   1.0417600    
+ Observed ratio:   1.0641025      Free-surface:  0.91531116    
+ KEV   336.55   46.27H  0.0063 L  45.23 41.5,39,500,1000,0.01,0.01
+ Input: KEV  V B 34,39,500,1000,0.01,0.01
+ Q correction:   1.0417600    
+ Observed ratio:  0.87179488      Free-surface:   1.0397532    
+ KEV   336.55   46.27V -0.0249 B  45.23 34,39,500,1000,0.01,0.01
+ Input: KIP  C
+ KIP    97.84   44.08C
+ Input: KIP  R
+ KIP    97.84   45.27R
+ Input: KIP  B
+ KIP    97.84   45.27B
+ Input: KIP  H R 102,22,500,1000,0.01,0.01
+ Q correction:   1.0430821    
+ Observed ratio:   4.6363635      Free-surface:  0.91870546    
+ KIP    97.84   45.27H  0.6477 R  44.08 102,22,500,1000,0.01,0.01
+ Input: KIP  V B 75,22,500,1000,0.01,0.01
+ Q correction:   1.0430821    
+ Observed ratio:   3.4090910      Free-surface:   1.0398524    
+ KIP    97.84   45.27V  0.5679 B  44.08 75,22,500,1000,0.01,0.01
+ Input: PAS  D
+ PAS    59.83   35.69D
+ Input: PAS  R
+ PAS    59.83   37.79R
+ Input: PAS  B
+ PAS    59.83   37.79B
+ Input: PAS  H R 74.5,11,500,1000,0.01,0.01
+ Q correction:   1.0526687    
+ Observed ratio:   6.7727275      Free-surface:  0.94309032    
+ PAS    59.83   37.79H  0.8276 R  35.69 74.5,11,500,1000,0.01,0.01
+ Input: PAS  V B 23,11,500,1000,0.01,0.01
+ Q correction:   1.0526687    
+ Observed ratio:   2.0909090      Free-surface:   1.0363122    
+ PAS    59.83   37.79V  0.3581 B  35.69 23,11,500,1000,0.01,0.01
+ Input: TOL  D
+ TOL   334.45   27.95D
+ Input: TOL  L
+ TOL   334.45   30.59L
+ Input: TOL  B
+ TOL   334.45   30.59B
+ Input: TOL  H L 20,21,500,1000,0.01,0.01
+ Q correction:   1.0605779    
+ Observed ratio:  0.95238096      Free-surface:  0.96339130    
+ TOL   334.45   30.59H -0.0118 L  27.95 20,21,500,1000,0.01,0.01
+ Input: TOL  V B 33,21,500,1000,0.01,0.01
+ Q correction:   1.0605779    
+ Observed ratio:   1.5714285      Free-surface:   1.0285029    
+ TOL   334.45   30.59V  0.2340 B  27.95 33,21,500,1000,0.01,0.01

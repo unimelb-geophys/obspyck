@@ -1,0 +1,242 @@
+  Fri Jun 19 10:18:41 2009  for program FOCMEC
+ Event 8703270729 4 errors max
+ Input from a file 8703270729.dat
+ 8703270729305935N3376 84W1384 1954   31 42 12  24
+
+ Statn  Azimuth  TOAng   Key  Log10 (S/P)  NumPol  DenTOAng  Comment
+  GBTN     9.0    148.0   C
+  TLT    189.0    121.0    
+  ETT    218.0    118.0   D
+  ORT    350.0    114.0   C
+  TKL     76.0    109.0   C
+  TQTN   264.0    110.0   D
+  RCT    238.0    110.0    
+  HPKT    38.0    107.0    
+  DCT    197.0    104.0    
+  WSSR   118.0    102.0   C
+  BHT    296.0    101.0   C
+  WMTN   243.0    100.0   D
+  CRTN    26.0     99.0   D
+  RHT    228.0     99.0   D
+  LMTN    64.0     98.0   D
+  BBG    153.0     98.0   C
+  GMG    207.0     97.0   D
+  ONTN   349.0     96.0   C
+  ANTN   307.0     80.0   C
+  RCG    238.0     80.0   D
+  CPO    272.0     80.0   D
+  CCVA    24.0     80.0   D
+  SMTN    46.0     80.0   D
+  BRTN    54.0     80.0   D
+  PDTN   258.0     80.0   D
+  LKGA   228.0     80.0   D
+  TVG    217.0     80.0    
+  ABTN   282.0     80.0   C
+  TRYN   101.0     80.0   C
+  SLTN    62.0     53.0   D
+  BEV    140.0     53.0    
+  GFM     74.0     53.0   D
+  OCA    243.0     53.0    
+  BENN    89.0     53.0   D
+  PRM    133.0     53.0    
+  CHF    138.0     53.0    
+  MSAL   251.0     53.0   D
+  CH6    139.0     53.0    
+  ATL    182.0     53.0    
+  BGKY   309.0     53.0    
+  SHTN   268.0     53.0   D
+  SOKY   325.0     53.0   D
+  L6KY   349.0     53.0    
+  PKNC    78.0     53.0   D
+  ETG    162.0     53.0    
+  BHKY   355.0     53.0    
+  JSC    117.0     53.0    
+  PLVA    65.0     53.0   D
+  PKKY    18.0     53.0   D
+  LHS    110.0     53.0    
+  PUV     61.0     53.0    
+  SMKY   308.0     53.0    
+  PWLA   261.0     53.0   C
+  NAV     57.0     53.0    
+  MOTN   290.0     53.0   C
+  HWV     52.0     53.0   C
+  BLA     61.0     53.0    
+  VWV     57.0     53.0   C
+ Polarities/Errors:  P 037/04  SV 000/00  SH 000/00
+ There are no amplitude ratio data
+ The minimum, increment and maximum B axis trend are     0.00    5.00  355.00
+ The limits for the B axis plunge are     0.00    5.00   90.00
+ The limits for the angle of the A axis are     0.00    5.00   85.00
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     90.00   274.91    50.00
+     Dip,Strike,Rake     40.00   184.91   180.00   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     94.91    50.00     4.91     0.00
+     Lower Hem. Trend & Plunge of B    274.91    40.00
+     Lower Hem. Trend, Plunge of P,T     37.64    32.80   152.18    32.80
+     MRR = 0.00  MTT = 0.11  MPP =-0.11  MRT =-0.76  MRP = 0.07  MTP = 0.63
+A angle with plane defined by vertical & B trend:  0.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     82.36   274.99    49.57
+     Dip,Strike,Rake     41.03   176.11   168.31   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     86.11    48.97   184.99     7.64
+     Lower Hem. Trend & Plunge of B    281.45    40.00
+     Lower Hem. Trend, Plunge of P,T     35.69    26.06   148.90    38.87
+     MRR = 0.20  MTT =-0.09  MPP =-0.11  MRT =-0.74  MRP =-0.02  MTP = 0.65
+N angle with plane defined by vertical & B trend: 80.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     86.17   278.24    49.89
+     Dip,Strike,Rake     40.26   183.70   174.07   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     93.70    49.74   188.24     3.83
+     Lower Hem. Trend & Plunge of B    281.45    40.00
+     Lower Hem. Trend, Plunge of P,T     39.80    29.50   154.00    35.93
+     MRR = 0.10  MTT = 0.08  MPP =-0.18  MRT =-0.76  MRP = 0.07  MTP = 0.63
+N angle with plane defined by vertical & B trend: 85.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     78.56   278.23    49.02
+     Dip,Strike,Rake     42.27   175.37   162.86   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     85.37    47.73   188.23    11.44
+     Lower Hem. Trend & Plunge of B    288.00    40.00
+     Lower Hem. Trend, Plunge of P,T     38.36    22.52   149.93    41.56
+     MRR = 0.29  MTT =-0.11  MPP =-0.19  MRT =-0.71  MRP =-0.03  MTP = 0.66
+N angle with plane defined by vertical & B trend: 75.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     90.00   275.29    45.00
+     Dip,Strike,Rake     45.00   185.29   180.00   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     95.29    45.00     5.29     0.00
+     Lower Hem. Trend & Plunge of B    275.29    45.00
+     Lower Hem. Trend, Plunge of P,T     40.56    30.00   150.03    30.00
+     MRR = 0.00  MTT = 0.13  MPP =-0.13  MRT =-0.70  MRP = 0.07  MTP = 0.70
+A angle with plane defined by vertical & B trend:  0.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     86.47    98.83   -44.89
+     Dip,Strike,Rake     45.22   192.35  -175.02   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N    102.35    44.78     8.83     3.53
+     Lower Hem. Trend & Plunge of B    275.29    45.00
+     Lower Hem. Trend, Plunge of P,T     45.41    32.80   154.61    27.03
+     MRR =-0.09  MTT = 0.30  MPP =-0.21  MRT =-0.69  MRP = 0.15  MTP = 0.66
+A angle with plane defined by vertical & B trend:  5.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     86.47   271.75    44.89
+     Dip,Strike,Rake     45.22   178.24   175.02   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     88.24    44.78   181.75     3.53
+     Lower Hem. Trend & Plunge of B    275.29    45.00
+     Lower Hem. Trend, Plunge of P,T     35.98    27.03   145.17    32.80
+     MRR = 0.09  MTT =-0.04  MPP =-0.04  MRT =-0.70  MRP =-0.02  MTP = 0.71
+N angle with plane defined by vertical & B trend: 85.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     82.95   275.25    44.56
+     Dip,Strike,Rake     45.86   178.35   170.15   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     88.35    44.14   185.25     7.05
+     Lower Hem. Trend & Plunge of B    282.35    45.00
+     Lower Hem. Trend, Plunge of P,T     38.69    23.93   147.07    35.40
+     MRR = 0.17  MTT =-0.04  MPP =-0.13  MRT =-0.69  MRP =-0.02  MTP = 0.71
+N angle with plane defined by vertical & B trend: 80.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     86.47   278.81    44.89
+     Dip,Strike,Rake     45.22   185.30   175.02   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     95.30    44.78   188.81     3.53
+     Lower Hem. Trend & Plunge of B    282.35    45.00
+     Lower Hem. Trend, Plunge of P,T     43.03    27.03   152.23    32.80
+     MRR = 0.09  MTT = 0.13  MPP =-0.22  MRT =-0.70  MRP = 0.06  MTP = 0.69
+N angle with plane defined by vertical & B trend: 85.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     79.45   278.68    44.01
+     Dip,Strike,Rake     46.92   178.66   165.49   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     88.66    43.08   188.68    10.55
+     Lower Hem. Trend & Plunge of B    289.41    45.00
+     Lower Hem. Trend, Plunge of P,T     41.62    20.70   148.64    37.76
+     MRR = 0.25  MTT =-0.03  MPP =-0.22  MRT =-0.66  MRP =-0.03  MTP = 0.71
+N angle with plane defined by vertical & B trend: 75.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     90.00   273.91    40.00
+     Dip,Strike,Rake     50.00   183.91   180.00   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     93.91    40.00     3.91     0.00
+     Lower Hem. Trend & Plunge of B    273.91    50.00
+     Lower Hem. Trend, Plunge of P,T     41.37    27.03   146.46    27.03
+     MRR = 0.00  MTT = 0.10  MPP =-0.10  MRT =-0.64  MRP = 0.04  MTP = 0.76
+A angle with plane defined by vertical & B trend:  0.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     83.59   274.05    39.57
+     Dip,Strike,Rake     50.73   178.78   171.71   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     88.78    39.27   184.05     6.41
+     Lower Hem. Trend & Plunge of B    281.74    50.00
+     Lower Hem. Trend, Plunge of P,T     39.95    21.63   144.17    31.77
+     MRR = 0.14  MTT =-0.03  MPP =-0.11  MRT =-0.63  MRP =-0.04  MTP = 0.77
+N angle with plane defined by vertical & B trend: 80.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+     Dip,Strike,Rake     80.42   277.97    39.03
+     Dip,Strike,Rake     51.62   180.29   167.75   Auxiliary Plane
+     Lower Hem. Trend, Plunge of A,N     90.29    38.38   187.97     9.58
+     Lower Hem. Trend & Plunge of B    289.57    50.00
+     Lower Hem. Trend, Plunge of P,T     43.42    18.75   146.57    33.83
+     MRR = 0.21  MTT = 0.01  MPP =-0.21  MRT =-0.61  MRP =-0.05  MTP = 0.76
+N angle with plane defined by vertical & B trend: 75.0
+
+ P Polarity error at  TKL  PWLA HWV  VWV 
+ P Polarity weights:  1.00 1.00 1.00 1.00
+  Total P polarity weight is  4.000
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+ There are  13 acceptable solutions
